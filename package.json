@@ -1,0 +1,27 @@
+{
+  "name": "my-website",
+  "version": "1.0.0",
+  "description": "Portfolio 3D interattivo con Three.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "portfolio",
+    "three.js",
+    "3d",
+    "webgl"
+  ],
+  "author": "Matteo",
+  "license": "ISC",
+  "dependencies": {
+    "gsap": "^3.14.2",
+    "three": "^0.182.0"
+  },
+  "devDependencies": {
+    "vite": "^7.3.0",
+    "vite-plugin-glsl": "^1.5.5"
+  }
+}

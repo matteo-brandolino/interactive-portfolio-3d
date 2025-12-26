@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio 3D - Matteo</title>
+    <meta name="description" content="Portfolio interattivo 3D di Matteo - Developer & Creative Coder">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            outline: none;
+        }
+
+        /* Loading screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s;
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-text {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4f46e5, #06b6d4);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* UI Panels Container */
+        #panels-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .station-panel {
+            position: absolute;
+            top: 50%;
+            right: -100%;
+            transform: translateY(-50%);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d4b8 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 16px 0 0 16px;
+            box-shadow: -8px 0 32px rgba(101, 67, 33, 0.4), inset 0 0 100px rgba(139, 92, 46, 0.1);
+            padding: 2rem;
+            overflow-y: auto;
+            pointer-events: auto;
+            opacity: 0;
+            border: 3px solid #8b5a2b;
+        }
+
+        .station-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(139, 92, 46, 0.03) 2px,
+                    rgba(139, 92, 46, 0.03) 4px
+                );
+            pointer-events: none;
+            border-radius: 16px 0 0 16px;
+        }
+
+        .station-panel.active {
+            right: 0;
+            opacity: 1;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #8b5a2b;
+            position: relative;
+            z-index: 1;
+        }
+
+        .panel-title {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: #3e2723;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .close-btn {
+            background: #8b5a2b;
+            color: #f5e6d3;
+            border: 2px solid #654321;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-btn:hover {
+            background: #654321;
+            transform: scale(1.1);
+        }
+
+        .panel-content {
+            color: #4a3728;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Controls hint */
+        #controls-hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+        }
+
+        #controls-hint kbd {
+            background: #374151;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 0 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas for Three.js -->
+    <canvas id="canvas"></canvas>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-text">Caricamento portfolio...</div>
+        <div class="progress-bar">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+    </div>
+
+    <!-- UI Panels Container -->
+    <div id="panels-container"></div>
+
+    <!-- Controls Hint -->
+    <div id="controls-hint">
+        <!-- Will be populated by JavaScript based on device -->
+    </div>
+
+    <!-- Main Application -->
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
