@@ -2,6 +2,7 @@ import Experience from "../Experience/Experience.js";
 import Island from "./Island.js";
 import Character from "./Character.js";
 import Stations from "./Stations.js";
+import Camp from "./Camp.js";
 
 export default class World {
   constructor() {
@@ -10,6 +11,12 @@ export default class World {
     this.resources = this.experience.resources;
 
     this.island = new Island();
+    this.camp = new Camp();
+
+    if (this.camp.obstacles && this.island.obstacles) {
+      this.island.obstacles.push(...this.camp.obstacles);
+    }
+
     this.character = new Character();
     this.stations = new Stations();
   }
@@ -17,6 +24,10 @@ export default class World {
   update() {
     if (this.island) {
       this.island.update();
+    }
+
+    if (this.camp) {
+      this.camp.update();
     }
 
     if (this.character) {

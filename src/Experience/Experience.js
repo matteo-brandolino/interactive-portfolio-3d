@@ -47,6 +47,16 @@ export default class Experience {
         type: "gltfModel",
         path: "/models/wooden_sign.glb",
       },
+      {
+        name: "tent",
+        type: "gltfModel",
+        path: "/models/tent.glb",
+      },
+      {
+        name: "bonfire",
+        type: "gltfModel",
+        path: "/models/bonfire.glb",
+      },
     ]);
 
     this.camera = new Camera();
