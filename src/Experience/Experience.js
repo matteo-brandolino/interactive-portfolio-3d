@@ -43,11 +43,6 @@ export default class Experience {
         path: "/models/rock.glb",
       },
       {
-        name: "sea",
-        type: "gltfModel",
-        path: "/models/sea.glb",
-      },
-      {
         name: "wooden_sign",
         type: "gltfModel",
         path: "/models/wooden_sign.glb",
