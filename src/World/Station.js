@@ -92,18 +92,50 @@ export default class Station {
     canvas.width = 512;
     canvas.height = 128;
 
-    context.fillStyle = "rgba(0, 0, 0, 0.7)";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    // Wooden background with gradient and rounded corners
+    const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, "#d4a574");
+    gradient.addColorStop(1, "#c89666");
+    context.fillStyle = gradient;
+    this.roundRect(context, 0, 0, canvas.width, canvas.height, 20);
+    context.fill();
 
-    context.font = "Bold 48px Arial";
-    context.fillStyle = "#ffffff";
+    // Add wood grain texture effect
+    context.fillStyle = "rgba(139, 90, 43, 0.15)";
+    for (let i = 0; i < 8; i++) {
+      const y = Math.random() * canvas.height;
+      const height = 3 + Math.random() * 4;
+      this.roundRect(context, 0, y, canvas.width, height, 2);
+      context.fill();
+    }
+
+    // Add darker border for depth
+    context.strokeStyle = "#8b5a2b";
+    context.lineWidth = 8;
+    this.roundRect(context, 4, 4, canvas.width - 8, canvas.height - 8, 16);
+    context.stroke();
+
+    // Engraved text effect
+    context.font = "Bold 52px Georgia, serif";
     context.textAlign = "center";
     context.textBaseline = "middle";
+
+    // Light shadow for engraved effect
+    context.shadowColor = "rgba(255, 255, 255, 0.4)";
+    context.shadowOffsetX = 2;
+    context.shadowOffsetY = 2;
+    context.shadowBlur = 2;
+
+    // Dark carved text
+    context.fillStyle = "#3d2817";
     context.fillText(
-      `${this.data.icon} ${this.data.title}`,
+      this.data.title,
       canvas.width / 2,
       canvas.height / 2
     );
+
+    // Reset shadow
+    context.shadowColor = "transparent";
 
     const texture = new THREE.CanvasTexture(canvas);
     const spriteMaterial = new THREE.SpriteMaterial({
@@ -112,10 +144,24 @@ export default class Station {
       opacity: 0,
     });
     this.label = new THREE.Sprite(spriteMaterial);
-    this.label.scale.set(2.5, 0.6, 1);
-    this.label.position.y = 1.8;
+    this.label.scale.set(1.8, 0.45, 1);
+    this.label.position.set(0.3, 2.2, 0);
 
     this.group.add(this.label);
+  }
+
+  roundRect(ctx, x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
   }
 
   getColorByType() {
