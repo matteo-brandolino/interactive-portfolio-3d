@@ -4,6 +4,33 @@
  */
 
 export const cvData = {
+    // Stazione Camp: Informazioni e Comandi
+    info: {
+        title: 'Benvenuto',
+        icon: '🏕️',
+        welcome: 'Benvenuto nel mio portfolio 3D interattivo!',
+        description: 'Questo è un portfolio ispirato al lavoro di Bruno Simon. Esplora l\'isola per scoprire le mie esperienze, competenze e progetti.',
+        controls: {
+            desktop: [
+                { key: 'W', action: 'Muovi avanti' },
+                { key: 'A', action: 'Muovi a sinistra' },
+                { key: 'S', action: 'Muovi indietro' },
+                { key: 'D', action: 'Muovi a destra' },
+                { key: 'Space', action: 'Interagisci con le stazioni' },
+                { key: 'ESC', action: 'Chiudi pannelli' }
+            ],
+            mobile: [
+                { key: 'Joystick Virtuale', action: 'Muovi il personaggio' },
+                { key: 'Tap su Stazione', action: 'Interagisci' }
+            ]
+        },
+        stations: [
+            '💼 Esperienze Lavorative - Scopri il mio percorso professionale',
+            '⚡ Skills Tecniche - Le mie competenze tecniche',
+            '🚀 Progetti & OSS - I miei progetti e contributi open source',
+            '👋 Chi Sono - Informazioni personali e contatti'
+        ]
+    },
     // Stazione 1: Esperienze Lavorative
     work: {
         title: 'Esperienze Lavorative',

@@ -16,7 +16,7 @@ export default class UIManager {
     }
 
     createPanels() {
-        const types = ['work', 'skills', 'projects', 'about']
+        const types = ['info', 'work', 'skills', 'projects', 'about']
 
         types.forEach(type => {
             const panel = this.createPanel(type)
@@ -38,6 +38,8 @@ export default class UIManager {
         const data = cvData[type]
 
         switch (type) {
+            case 'info':
+                return this.getInfoContent(data)
             case 'work':
                 return this.getWorkContent(data)
             case 'skills':
@@ -49,6 +51,58 @@ export default class UIManager {
             default:
                 return ''
         }
+    }
+
+    getInfoContent(data) {
+        const desktopControls = data.controls.desktop.map(control => `
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <kbd style="background: #8b5a2b; color: #f5e6d3; padding: 0.25rem 0.75rem; border-radius: 4px; font-family: monospace; min-width: 80px; text-align: center;">
+                    ${control.key}
+                </kbd>
+                <span style="color: #4a3728; flex: 1; margin-left: 1rem;">
+                    ${control.action}
+                </span>
+            </div>
+        `).join('')
+
+        const stationsList = data.stations.map(station => `
+            <li style="margin-bottom: 0.5rem; color: #4a3728;">${station}</li>
+        `).join('')
+
+        return `
+            <div class="panel-header">
+                <div class="panel-title">${data.icon} ${data.title}</div>
+                <button class="close-btn" data-panel="info">×</button>
+            </div>
+            <div class="panel-content">
+                <h2 style="font-size: 1.5rem; font-weight: bold; color: #3e2723; margin-bottom: 1rem; font-family: Georgia, serif;">
+                    ${data.welcome}
+                </h2>
+                <p style="color: #4a3728; margin-bottom: 1.5rem; line-height: 1.6;">
+                    ${data.description}
+                </p>
+
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: #3e2723; margin-bottom: 1rem; font-family: Georgia, serif;">
+                    🎮 Comandi
+                </h3>
+                <div style="background: rgba(139, 90, 43, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 2px solid #8b5a2b;">
+                    ${desktopControls}
+                </div>
+
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: #3e2723; margin-bottom: 1rem; font-family: Georgia, serif;">
+                    📍 Stazioni dell'Isola
+                </h3>
+                <ul style="padding-left: 1.5rem; margin-bottom: 1rem;">
+                    ${stationsList}
+                </ul>
+
+                <div style="background: rgba(212, 165, 116, 0.3); padding: 1rem; border-radius: 8px; border: 2px solid #8b5a2b; margin-top: 1.5rem;">
+                    <p style="color: #3e2723; font-style: italic; margin: 0;">
+                        💡 Esplora l'isola e avvicinati alle stazioni di legno per scoprire i contenuti. Premi <kbd style="background: #8b5a2b; color: #f5e6d3; padding: 0.15rem 0.5rem; border-radius: 4px; font-family: monospace;">Space</kbd> per interagire!
+                    </p>
+                </div>
+            </div>
+        `
     }
 
     getWorkContent(data) {

@@ -269,6 +269,15 @@ export default class Character {
 
     const nearStation = world.stations.checkProximity(this.model.position);
 
+    const controlsHint = document.getElementById('controls-hint');
+    if (controlsHint) {
+      if (nearStation && nearStation.data.type === 'info') {
+        controlsHint.classList.add('visible');
+      } else {
+        controlsHint.classList.remove('visible');
+      }
+    }
+
     if (nearStation && this.controls.keys.interact) {
       this.interactWithStation(nearStation);
       this.controls.keys.interact = false;

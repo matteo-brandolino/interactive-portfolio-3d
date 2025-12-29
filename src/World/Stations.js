@@ -14,6 +14,15 @@ export default class Stations {
 
         const stationsData = [
             {
+                type: 'info',
+                title: cvData.info.title,
+                icon: cvData.info.icon,
+                position: {
+                    x: 0,
+                    z: -0.25
+                }
+            },
+            {
                 type: 'work',
                 title: cvData.work.title,
                 icon: cvData.work.icon,

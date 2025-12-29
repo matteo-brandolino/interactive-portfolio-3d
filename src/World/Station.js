@@ -19,6 +19,13 @@ export default class Station {
   createMarker() {
     this.group = new THREE.Group();
 
+    if (this.data.type === 'info') {
+      this.group.position.set(this.data.position.x, 0.7, this.data.position.z);
+      this.initialY = this.group.position.y;
+      this.scene.add(this.group);
+      return;
+    }
+
     const woodenSignModel = this.experience.resources.items.wooden_sign;
 
     if (woodenSignModel) {
@@ -145,7 +152,12 @@ export default class Station {
     });
     this.label = new THREE.Sprite(spriteMaterial);
     this.label.scale.set(1.8, 0.45, 1);
-    this.label.position.set(0.3, 2.2, 0);
+
+    if (this.data.type === 'info') {
+      this.label.position.set(0, 2.5, 0);
+    } else {
+      this.label.position.set(0.3, 2.2, 0);
+    }
 
     this.group.add(this.label);
   }
