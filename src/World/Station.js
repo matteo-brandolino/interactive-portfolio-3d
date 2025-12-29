@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import gsap from "gsap";
 import Experience from "../Experience/Experience.js";
+import { i18n } from "../data/i18n.js";
 
 export default class Station {
   constructor(data) {
@@ -14,12 +15,16 @@ export default class Station {
 
     this.createMarker();
     this.createLabel();
+
+    i18n.onLanguageChange(() => {
+      this.updateLabel();
+    });
   }
 
   createMarker() {
     this.group = new THREE.Group();
 
-    if (this.data.type === 'info') {
+    if (this.data.type === "info") {
       this.group.position.set(this.data.position.x, 0.7, this.data.position.z);
       this.initialY = this.group.position.y;
       this.scene.add(this.group);
@@ -99,50 +104,10 @@ export default class Station {
     canvas.width = 512;
     canvas.height = 128;
 
-    // Wooden background with gradient and rounded corners
-    const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, "#d4a574");
-    gradient.addColorStop(1, "#c89666");
-    context.fillStyle = gradient;
-    this.roundRect(context, 0, 0, canvas.width, canvas.height, 20);
-    context.fill();
+    this.labelCanvas = canvas;
+    this.labelContext = context;
 
-    // Add wood grain texture effect
-    context.fillStyle = "rgba(139, 90, 43, 0.15)";
-    for (let i = 0; i < 8; i++) {
-      const y = Math.random() * canvas.height;
-      const height = 3 + Math.random() * 4;
-      this.roundRect(context, 0, y, canvas.width, height, 2);
-      context.fill();
-    }
-
-    // Add darker border for depth
-    context.strokeStyle = "#8b5a2b";
-    context.lineWidth = 8;
-    this.roundRect(context, 4, 4, canvas.width - 8, canvas.height - 8, 16);
-    context.stroke();
-
-    // Engraved text effect
-    context.font = "Bold 52px Georgia, serif";
-    context.textAlign = "center";
-    context.textBaseline = "middle";
-
-    // Light shadow for engraved effect
-    context.shadowColor = "rgba(255, 255, 255, 0.4)";
-    context.shadowOffsetX = 2;
-    context.shadowOffsetY = 2;
-    context.shadowBlur = 2;
-
-    // Dark carved text
-    context.fillStyle = "#3d2817";
-    context.fillText(
-      this.data.title,
-      canvas.width / 2,
-      canvas.height / 2
-    );
-
-    // Reset shadow
-    context.shadowColor = "transparent";
+    this.drawLabelContent();
 
     const texture = new THREE.CanvasTexture(canvas);
     const spriteMaterial = new THREE.SpriteMaterial({
@@ -153,13 +118,68 @@ export default class Station {
     this.label = new THREE.Sprite(spriteMaterial);
     this.label.scale.set(1.8, 0.45, 1);
 
-    if (this.data.type === 'info') {
+    if (this.data.type === "info") {
       this.label.position.set(0, 2.5, 0);
     } else {
       this.label.position.set(0.3, 2.2, 0);
     }
 
     this.group.add(this.label);
+  }
+
+  drawLabelContent() {
+    const context = this.labelContext;
+    const canvas = this.labelCanvas;
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    const gradient = context.createLinearGradient(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+    gradient.addColorStop(0, "#d4a574");
+    gradient.addColorStop(1, "#c89666");
+    context.fillStyle = gradient;
+    this.roundRect(context, 0, 0, canvas.width, canvas.height, 20);
+    context.fill();
+
+    context.fillStyle = "rgba(139, 90, 43, 0.15)";
+    for (let i = 0; i < 8; i++) {
+      const y = Math.random() * canvas.height;
+      const height = 3 + Math.random() * 4;
+      this.roundRect(context, 0, y, canvas.width, height, 2);
+      context.fill();
+    }
+
+    context.strokeStyle = "#8b5a2b";
+    context.lineWidth = 8;
+    this.roundRect(context, 4, 4, canvas.width - 8, canvas.height - 8, 16);
+    context.stroke();
+
+    context.font = "Bold 52px Georgia, serif";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+
+    context.shadowColor = "rgba(255, 255, 255, 0.4)";
+    context.shadowOffsetX = 2;
+    context.shadowOffsetY = 2;
+    context.shadowBlur = 2;
+
+    const title = i18n.t(`${this.data.type}.title`);
+    context.fillStyle = "#3d2817";
+    context.fillText(title, canvas.width / 2, canvas.height / 2);
+
+    context.shadowColor = "transparent";
+  }
+
+  updateLabel() {
+    if (!this.label || !this.labelCanvas) return;
+
+    this.drawLabelContent();
+
+    this.label.material.map.needsUpdate = true;
   }
 
   roundRect(ctx, x, y, width, height, radius) {

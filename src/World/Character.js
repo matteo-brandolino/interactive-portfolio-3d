@@ -278,6 +278,14 @@ export default class Character {
       }
     }
 
+    if (this.experience.languageSwitcher) {
+      if (nearStation && nearStation.data.type === 'info') {
+        this.experience.languageSwitcher.show();
+      } else {
+        this.experience.languageSwitcher.hide();
+      }
+    }
+
     if (nearStation && this.controls.keys.interact) {
       this.interactWithStation(nearStation);
       this.controls.keys.interact = false;

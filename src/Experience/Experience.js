@@ -6,6 +6,7 @@ import Camera from "../Camera/Camera.js";
 import Renderer from "./Renderer.js";
 import World from "../World/World.js";
 import UIManager from "../UI/UIManager.js";
+import LanguageSwitcher from "../UI/LanguageSwitcher.js";
 import Stats from "../Utils/Stats.js";
 
 let instance = null;
@@ -73,6 +74,7 @@ export default class Experience {
     this.resources.on("ready", () => {
       this.world = new World();
       this.ui = new UIManager();
+      this.languageSwitcher = new LanguageSwitcher();
       this.hideLoadingScreen();
     });
 
@@ -80,6 +82,7 @@ export default class Experience {
       if (!this.world) {
         this.world = new World();
         this.ui = new UIManager();
+        this.languageSwitcher = new LanguageSwitcher();
         this.hideLoadingScreen();
       }
     }, 10000);
@@ -142,6 +145,10 @@ export default class Experience {
   destroy() {
     this.sizes.off("resize");
     this.time.off("tick");
+
+    if (this.languageSwitcher) {
+      this.languageSwitcher.destroy();
+    }
 
     this.scene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
