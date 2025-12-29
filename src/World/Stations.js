@@ -17,40 +17,40 @@ export default class Stations {
                 type: 'work',
                 title: cvData.work.title,
                 icon: cvData.work.icon,
-                angle: 0,
+                angle: 0.4,
                 position: {
-                    x: Math.sin(0) * islandRadius,
-                    z: Math.cos(0) * islandRadius
+                    x: Math.sin(0.4) * islandRadius,
+                    z: Math.cos(0.4) * islandRadius
                 }
             },
             {
                 type: 'skills',
                 title: cvData.skills.title,
                 icon: cvData.skills.icon,
-                angle: Math.PI / 2,
+                angle: 1.9,
                 position: {
-                    x: Math.sin(Math.PI / 2) * islandRadius,
-                    z: Math.cos(Math.PI / 2) * islandRadius
+                    x: Math.sin(1.9) * islandRadius,
+                    z: Math.cos(1.9) * islandRadius
                 }
             },
             {
                 type: 'projects',
                 title: cvData.projects.title,
                 icon: cvData.projects.icon,
-                angle: Math.PI,
+                angle: 3.6,
                 position: {
-                    x: Math.sin(Math.PI) * islandRadius,
-                    z: Math.cos(Math.PI) * islandRadius
+                    x: Math.sin(3.6) * islandRadius,
+                    z: Math.cos(3.6) * islandRadius
                 }
             },
             {
                 type: 'about',
                 title: cvData.about.title,
                 icon: cvData.about.icon,
-                angle: (3 * Math.PI) / 2,
+                angle: 5.2,
                 position: {
-                    x: Math.sin((3 * Math.PI) / 2) * islandRadius,
-                    z: Math.cos((3 * Math.PI) / 2) * islandRadius
+                    x: Math.sin(5.2) * islandRadius,
+                    z: Math.cos(5.2) * islandRadius
                 }
             }
         ]
@@ -59,8 +59,6 @@ export default class Stations {
             const station = new Station(data)
             this.stations.push(station)
         })
-
-        console.log(`✅ Created ${this.stations.length} stations`)
     }
 
     getNearestStation(characterPosition) {

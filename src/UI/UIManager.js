@@ -16,7 +16,6 @@ export default class UIManager {
     }
 
     createPanels() {
-        // Crea un panel per ogni tipo di stazione
         const types = ['work', 'skills', 'projects', 'about']
 
         types.forEach(type => {
@@ -24,16 +23,12 @@ export default class UIManager {
             this.panels[type] = panel
             this.panelsContainer.appendChild(panel)
         })
-
-        console.log('✅ UI Panels creati')
     }
 
     createPanel(type) {
         const panel = document.createElement('div')
         panel.className = 'station-panel'
         panel.id = `panel-${type}`
-
-        // Popola il panel con i dati specifici
         panel.innerHTML = this.getPanelContent(type)
 
         return panel
@@ -410,15 +405,11 @@ export default class UIManager {
                 ease: 'power3.out'
             }
         )
-
-        console.log(`📖 Aperto panel: ${type}`)
     }
 
     hidePanel(type) {
         const panel = this.panels[type]
         if (!panel) return
-
-        // Anima uscita panel
         gsap.to(panel, {
             x: '100%',
             opacity: 0,
@@ -434,7 +425,6 @@ export default class UIManager {
         if (this.currentPanel) {
             this.hidePanel(this.currentPanel)
             this.currentPanel = null
-            console.log('📖 Panel chiuso')
         }
     }
 

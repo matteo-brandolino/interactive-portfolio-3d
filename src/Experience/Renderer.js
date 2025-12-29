@@ -15,7 +15,7 @@ export default class Renderer {
     setInstance() {
         this.instance = new THREE.WebGLRenderer({
             canvas: this.canvas,
-            antialias: true,
+            antialias: false,
             alpha: true,
             powerPreference: 'high-performance'
         })
@@ -24,7 +24,8 @@ export default class Renderer {
         this.instance.setClearColor('#87ceeb', 1)
 
         this.instance.shadowMap.enabled = true
-        this.instance.shadowMap.type = THREE.PCFSoftShadowMap
+        this.instance.shadowMap.type = THREE.BasicShadowMap
+        this.instance.shadowMap.autoUpdate = true
 
         this.instance.outputColorSpace = THREE.SRGBColorSpace
         this.instance.toneMapping = THREE.ACESFilmicToneMapping

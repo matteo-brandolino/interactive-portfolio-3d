@@ -9,6 +9,7 @@ export default class Island {
 
         this.group = new THREE.Group()
         this.islandRadius = 15
+        this.obstacles = []
 
         this.createIsland()
         this.createBeach()
@@ -21,7 +22,7 @@ export default class Island {
     }
 
     createIsland() {
-        const baseGeometry = new THREE.CylinderGeometry(this.islandRadius, this.islandRadius - 1, 1.5, 64)
+        const baseGeometry = new THREE.CylinderGeometry(this.islandRadius, this.islandRadius - 1, 1.5, 32)
         const baseMaterial = new THREE.MeshStandardMaterial({
             color: '#8b7355',
             flatShading: true,
@@ -29,11 +30,10 @@ export default class Island {
         })
         const base = new THREE.Mesh(baseGeometry, baseMaterial)
         base.receiveShadow = true
-        base.castShadow = true
         base.position.y = -0.25
         this.group.add(base)
 
-        const grassGeometry = new THREE.CylinderGeometry(this.islandRadius, this.islandRadius, 0.2, 64)
+        const grassGeometry = new THREE.CylinderGeometry(this.islandRadius, this.islandRadius, 0.2, 32)
         const grassMaterial = new THREE.MeshStandardMaterial({
             color: '#7cb342',
             flatShading: true,
@@ -66,7 +66,7 @@ export default class Island {
             flatShading: true
         })
 
-        for (let i = 0; i < 80; i++) {
+        for (let i = 0; i < 20; i++) {
             const angle = Math.random() * Math.PI * 2
             const radius = Math.random() * (this.islandRadius - 2)
             const x = Math.cos(angle) * radius
@@ -80,37 +80,49 @@ export default class Island {
                 0.8 + Math.random() * 0.4,
                 0.8 + Math.random() * 0.4
             )
+            blade.matrixAutoUpdate = false
+            blade.updateMatrix()
             this.group.add(blade)
         }
     }
 
     createTrees() {
-        const treePositions = []
-        for (let i = 0; i < 10; i++) {
-            const angle = Math.random() * Math.PI * 2
-            const radius = 3 + Math.random() * (this.islandRadius - 5)
-            treePositions.push({
-                x: Math.cos(angle) * radius,
-                z: Math.sin(angle) * radius
-            })
-        }
+        const treePositions = [
+            { angle: 0.8, radius: 7 },
+            { angle: 2.5, radius: 6 },
+            { angle: 3.0, radius: 8 },
+            { angle: 4.2, radius: 7 },
+            { angle: 5.5, radius: 6.5 },
+            { angle: 1.2, radius: 8.5 }
+        ].map(pos => ({
+            x: Math.cos(pos.angle) * pos.radius,
+            z: Math.sin(pos.angle) * pos.radius
+        }))
 
         const treeModel = this.experience.resources.items.tree
 
         if (treeModel) {
             treePositions.forEach(pos => {
                 const tree = treeModel.scene.clone()
-                tree.position.set(pos.x, 0.7, pos.z)
-                tree.scale.set(1.2, 1.2, 1.2)
+                tree.position.set(pos.x, 1.0, pos.z)
+                tree.scale.set(1.0, 1.0, 1.0)
 
                 tree.traverse((child) => {
                     if (child instanceof THREE.Mesh) {
                         child.castShadow = true
                         child.receiveShadow = true
                     }
+                    child.matrixAutoUpdate = false
+                    child.updateMatrix()
                 })
 
                 this.group.add(tree)
+
+                this.obstacles.push({
+                    x: pos.x,
+                    z: pos.z,
+                    radius: 0.6
+                })
             })
         } else {
             const trunkGeometry = new THREE.CylinderGeometry(0.1, 0.15, 0.6, 6)
@@ -135,10 +147,10 @@ export default class Island {
             const leavesMatrix = new THREE.Matrix4()
 
             treePositions.forEach((pos, i) => {
-                trunkMatrix.setPosition(pos.x, 0.7 + 0.3, pos.z)
+                trunkMatrix.setPosition(pos.x, 0.71 + 0.3, pos.z)
                 instancedTrunks.setMatrixAt(i, trunkMatrix)
 
-                leavesMatrix.setPosition(pos.x, 0.7 + 0.9, pos.z)
+                leavesMatrix.setPosition(pos.x, 0.71 + 0.9, pos.z)
                 instancedLeaves.setMatrixAt(i, leavesMatrix)
             })
 
@@ -153,16 +165,25 @@ export default class Island {
     createRocks() {
         const rockModel = this.experience.resources.items.rock
 
-        for (let i = 0; i < 15; i++) {
-            const angle = Math.random() * Math.PI * 2
-            const radius = (this.islandRadius - 3) + Math.random() * 2
-            const x = Math.cos(angle) * radius
-            const z = Math.sin(angle) * radius
+        const rockPositions = [
+            { angle: 0.2, radius: 12 },
+            { angle: 1.1, radius: 11.5 },
+            { angle: 2.2, radius: 12.5 },
+            { angle: 3.1, radius: 11.8 },
+            { angle: 4.0, radius: 12.2 },
+            { angle: 4.9, radius: 11.6 },
+            { angle: 5.6, radius: 12.3 },
+            { angle: 6.0, radius: 11.9 }
+        ]
+
+        rockPositions.forEach(pos => {
+            const x = Math.cos(pos.angle) * pos.radius
+            const z = Math.sin(pos.angle) * pos.radius
 
             if (rockModel) {
                 const rock = rockModel.scene.clone()
                 rock.position.set(x, 0.8, z)
-                rock.scale.set(0.5, 0.5, 0.5)
+                rock.scale.set(1.8, 1.8, 1.8)
                 rock.rotation.y = Math.random() * Math.PI * 2
 
                 rock.traverse((child) => {
@@ -170,9 +191,17 @@ export default class Island {
                         child.castShadow = true
                         child.receiveShadow = true
                     }
+                    child.matrixAutoUpdate = false
+                    child.updateMatrix()
                 })
 
                 this.group.add(rock)
+
+                this.obstacles.push({
+                    x: x,
+                    z: z,
+                    radius: 0.9
+                })
             } else {
                 const rockGeometry = new THREE.DodecahedronGeometry(0.2 + Math.random() * 0.15, 0)
                 const rockMaterial = new THREE.MeshStandardMaterial({
@@ -191,8 +220,14 @@ export default class Island {
                 instancedRock.castShadow = true
                 instancedRock.receiveShadow = true
                 this.group.add(instancedRock)
+
+                this.obstacles.push({
+                    x: x,
+                    z: z,
+                    radius: 0.4
+                })
             }
-        }
+        })
     }
 
     createWater() {
@@ -214,7 +249,6 @@ export default class Island {
 
             this.group.add(this.waterMesh)
         } else {
-            console.warn('Sea model not found, using fallback')
             const waterGeometry = new THREE.PlaneGeometry(100, 100, 1, 1)
             const waterMaterial = new THREE.MeshStandardMaterial({
                 color: '#0ea5e9',
