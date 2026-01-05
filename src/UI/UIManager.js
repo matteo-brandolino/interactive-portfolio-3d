@@ -548,11 +548,11 @@ export default class UIManager {
     `;
   }
 
-  reloadPanels() {
+  async reloadPanels() {
     const wasOpen = this.currentPanel;
 
     if (this.currentPanel) {
-      this.hideCurrentPanel();
+      await this.hideCurrentPanel();
     }
 
     const types = ["info", "work", "skills", "projects", "about"];
@@ -570,9 +570,7 @@ export default class UIManager {
     });
 
     if (wasOpen) {
-      setTimeout(() => {
-        this.showPanel(wasOpen);
-      }, 100);
+      await this.showPanel(wasOpen);
     }
   }
 
@@ -590,15 +588,17 @@ export default class UIManager {
     });
   }
 
-  showPanel(type) {
+  async showPanel(type) {
     if (this.currentPanel) {
-      this.hidePanel(this.currentPanel);
+      await this.hidePanel(this.currentPanel);
     }
 
     const panel = this.panels[type];
     if (!panel) return;
 
     this.currentPanel = type;
+
+    gsap.killTweensOf(panel);
 
     panel.classList.add("active");
 
@@ -618,22 +618,31 @@ export default class UIManager {
   }
 
   hidePanel(type) {
-    const panel = this.panels[type];
-    if (!panel) return;
-    gsap.to(panel, {
-      x: "100%",
-      opacity: 0,
-      duration: 0.4,
-      ease: "power3.in",
-      onComplete: () => {
-        panel.classList.remove("active");
-      },
+    return new Promise((resolve) => {
+      const panel = this.panels[type];
+      if (!panel) {
+        resolve();
+        return;
+      }
+
+      gsap.killTweensOf(panel);
+
+      gsap.to(panel, {
+        x: "100%",
+        opacity: 0,
+        duration: 0.4,
+        ease: "power3.in",
+        onComplete: () => {
+          panel.classList.remove("active");
+          resolve();
+        },
+      });
     });
   }
 
-  hideCurrentPanel() {
+  async hideCurrentPanel() {
     if (this.currentPanel) {
-      this.hidePanel(this.currentPanel);
+      await this.hidePanel(this.currentPanel);
       this.currentPanel = null;
     }
   }
