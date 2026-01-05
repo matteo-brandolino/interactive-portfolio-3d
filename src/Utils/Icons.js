@@ -25,6 +25,12 @@ import {
   BookOpen,
   GitBranch,
   Binary,
+  Lightbulb,
+  MessageCircle,
+  TrendingUp,
+  Users,
+  FileText,
+  Headphones,
 } from "lucide";
 
 export const icons = {
@@ -65,6 +71,14 @@ export const icons = {
   bookOpen: BookOpen,
   gitBranch: GitBranch,
   binary: Binary,
+
+  // Soft skills
+  lightbulb: Lightbulb,
+  messageCircle: MessageCircle,
+  trendingUp: TrendingUp,
+  users: Users,
+  fileText: FileText,
+  headphones: Headphones,
 };
 
 export function createIcon(iconName, options = {}) {

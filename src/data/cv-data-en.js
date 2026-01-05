@@ -1,8 +1,8 @@
 export const cvDataEN = {
   info: {
-    welcome: "Welcome to my interactive 3D portfolio!",
+    welcome: "Welcome to my 3D portfolio!",
     description:
-      "This is a portfolio inspired by Bruno Simon's work. Explore the island to discover my experiences, skills and projects.",
+      "Explore this interactive island to learn about my journey as a developer: projects, technical skills, and work experience. Approach the wooden stations to get started!",
     controlsTitle: "Controls",
     stationsTitle: "Island Stations",
     tip: "Explore the island and approach the wooden stations to discover the contents. Press",
@@ -10,10 +10,10 @@ export const cvDataEN = {
     tipAction: "to interact!",
     controls: {
       desktop: [
-        { key: "W", action: "Move forward" },
-        { key: "A", action: "Move left" },
-        { key: "S", action: "Move backward" },
-        { key: "D", action: "Move right" },
+        { key: "W / ↑", action: "Move forward" },
+        { key: "A / ←", action: "Move left" },
+        { key: "S / ↓", action: "Move backward" },
+        { key: "D / →", action: "Move right" },
         { key: "Space", action: "Interact with stations" },
         { key: "ESC", action: "Close panels" },
       ],
@@ -91,7 +91,6 @@ export const cvDataEN = {
           { name: "Next.js", level: 85, years: 2 },
           { name: "HTML5/CSS3", level: 90, years: 5 },
           { name: "TailwindCSS", level: 85, years: 3 },
-          { name: "Three.js", level: 75, years: 1 },
         ],
       },
       backend: {
@@ -100,7 +99,7 @@ export const cvDataEN = {
           { name: "PHP (Yii2)", level: 85, years: 4 },
           { name: "Python", level: 80, years: 3 },
           { name: "PostgreSQL", level: 85, years: 4 },
-          { name: "MongoDB", level: 80, years: 3 },
+          { name: "MongoDB", level: 80, years: 2 },
           { name: "Express", level: 85, years: 4 },
         ],
       },
@@ -109,6 +108,7 @@ export const cvDataEN = {
           { name: "LLM Integration", level: 85, years: 2 },
           { name: "RAG Systems", level: 80, years: 1 },
           { name: "Node-RED", level: 85, years: 4 },
+          { name: "n8n", level: 75, years: 1 },
           { name: "OpenAI API", level: 85, years: 2 },
           { name: "AI Agents", level: 75, years: 1 },
         ],
@@ -116,20 +116,17 @@ export const cvDataEN = {
       tools: {
         skills: [
           { name: "Git", level: 95, years: 6 },
-          { name: "Docker", level: 75, years: 3 },
-          { name: "AWS", level: 70, years: 2 },
-          { name: "CI/CD (GitLab)", level: 75, years: 3 },
-          { name: "Vite", level: 85, years: 2 },
+          { name: "Docker", level: 75, years: 2 },
         ],
       },
     },
     softSkills: [
-      "Problem Solving",
-      "Effective Communication",
-      "Continuous Learning",
-      "Team Collaboration",
-      "Technical Documentation",
-      "Customer Care Solutions",
+      { icon: "lightbulb", text: "Problem Solving" },
+      { icon: "messageCircle", text: "Effective Communication" },
+      { icon: "trendingUp", text: "Continuous Learning" },
+      { icon: "users", text: "Team Collaboration" },
+      { icon: "fileText", text: "Technical Documentation" },
+      { icon: "headphones", text: "Customer Care Solutions" },
     ],
   },
 
@@ -159,7 +156,31 @@ export const cvDataEN = {
           "Comprehensive testing with Vitest",
         ],
         github: "https://github.com/matteo-brandolino/notes-rag",
-        status: "In Development",
+      },
+      {
+        name: "BidWars",
+        type: "Personal Project",
+        description:
+          "Enterprise-grade real-time auction platform with microservices architecture, instant bidding, and achievement system.",
+        technologies: [
+          "Next.js 16",
+          "React 19",
+          "Node.js",
+          "TypeScript",
+          "Socket.IO",
+          "Apache Kafka",
+          "MongoDB",
+          "Redis",
+          "Docker",
+        ],
+        features: [
+          "Real-time bidding via WebSocket with JWT authentication",
+          "Live leaderboards with Redis caching for high performance",
+          "Achievement system with badges and instant notifications",
+          "Event-driven architecture using Apache Kafka",
+          "Idempotent operations for distributed consistency",
+        ],
+        github: "https://github.com/matteo-brandolino/auction-ai",
       },
       {
         name: "AG2 Email Management",
@@ -181,7 +202,6 @@ export const cvDataEN = {
           "Tool integration for automated actions",
         ],
         github: "https://github.com/matteo-brandolino/ag2-email-management",
-        status: "Completed",
       },
       {
         name: "Cheshire Cat React Widget",
@@ -204,14 +224,13 @@ export const cvDataEN = {
           "Message callbacks and event handlers",
         ],
         github: "https://github.com/matteo-brandolino/widget-ccat-react-ts",
-        impact: "Official Cheshire Cat AI client",
-        status: "Production",
+        docs: "https://cheshire-cat-ai.github.io/docs/production/network/clients/?h=clien",
       },
       {
         name: "Interactive 3D Portfolio",
         type: "Personal Project",
         description:
-          "Bruno Simon-inspired portfolio with explorable 3D island and interactive stations.",
+          "The source code of this website! Interactive 3D portfolio with explorable island, built with Three.js and WebGL.",
         technologies: ["Three.js", "Vite", "GSAP", "WebGL", "JavaScript"],
         features: [
           "Free WASD movement on 3D island",
@@ -221,7 +240,6 @@ export const cvDataEN = {
           "Optimized 3D models and animations",
         ],
         github: "https://github.com/matteo-brandolino/interactive-portfolio-3d",
-        status: "In Development",
       },
     ],
     openSource: [
@@ -262,14 +280,6 @@ export const cvDataEN = {
         contributions: "Updated plugin architecture for Eliza v2",
         github: "https://github.com/elizaos-plugins/plugin-moralis/pull/1",
         status: "Open",
-      },
-      {
-        name: "Scaffold-ETH Challenges",
-        description: "Fixed contract method in Challenge 1 tests",
-        role: "Contributor",
-        contributions: "Corrected typo in tests (mintItem → stake)",
-        github: "https://github.com/scaffold-eth/se-2-challenges/pull/201",
-        status: "Merged",
       },
       {
         name: "Various Contributions",

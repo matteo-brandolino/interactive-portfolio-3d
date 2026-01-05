@@ -89,7 +89,7 @@ export const translations = {
         },
 
         projects: {
-            title: 'Progetti & OSS',
+            title: 'Progetti & Open Source',
             icon: 'projects',
             featuredTitle: 'Progetti in Evidenza',
             ossTitle: 'Contributi Open Source',
@@ -162,7 +162,7 @@ export const translations = {
         },
 
         projects: {
-            title: 'Projects & OSS',
+            title: 'Projects & Open Source',
             icon: 'projects',
             featuredTitle: 'Featured Projects',
             ossTitle: 'Open Source Contributions',

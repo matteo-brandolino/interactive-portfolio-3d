@@ -248,15 +248,17 @@ export default class UIManager {
 
     let softSkillsHTML = `
             <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #8b5a2b;">
-                <h3 style="font-size: 1.125rem; font-weight: 600; color: #3e2723; margin-bottom: 1rem;">
-                    🌟 ${t("skills.softSkillsTitle")}
+                <h3 style="font-size: 1.125rem; font-weight: 600; color: #3e2723; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    ${createIcon('star', { size: 22, color: '#3e2723' })}
+                    <span>${t("skills.softSkillsTitle")}</span>
                 </h3>
                 <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
                     ${data.softSkills
                       .map(
                         (skill) => `
-                        <span style="background: #f4e4c1; color: #5d4037; padding: 0.5rem 1rem; border-radius: 12px; font-size: 0.875rem; font-weight: 600; border: 2px solid #d4a574;">
-                            ${skill}
+                        <span style="background: #f4e4c1; color: #5d4037; padding: 0.5rem 1rem; border-radius: 12px; font-size: 0.875rem; font-weight: 600; border: 2px solid #d4a574; display: flex; align-items: center; gap: 0.5rem;">
+                            ${createIcon(skill.icon, { size: 16, color: '#8b5a2b' })}
+                            ${skill.text}
                         </span>
                     `
                       )
@@ -295,26 +297,9 @@ export default class UIManager {
                   .map(
                     (project) => `
                     <div style="margin-bottom: 2rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.3); border-radius: 12px; border: 2px solid #8b5a2b;">
-                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.75rem;">
-                            <h4 style="font-size: 1.125rem; font-weight: 600; color: #3e2723; margin: 0;">
-                                ${project.name}
-                            </h4>
-                            <span style="background: ${
-                              project.status === "Production"
-                                ? "#c8e6c9"
-                                : "#ffe0b2"
-                            }; color: ${
-                      project.status === "Production" ? "#1b5e20" : "#e65100"
-                    }; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; border: 2px solid ${
-                      project.status === "Production" ? "#81c784" : "#ffb74d"
-                    };">
-                                ${
-                                  project.status === "Production"
-                                    ? t("projects.status.production")
-                                    : t("projects.status.development")
-                                }
-                            </span>
-                        </div>
+                        <h4 style="font-size: 1.125rem; font-weight: 600; color: #3e2723; margin: 0 0 0.75rem 0;">
+                            ${project.name}
+                        </h4>
                         <div style="color: #6d5438; font-size: 0.875rem; margin-bottom: 0.75rem; font-weight: 500;">
                             ${project.type}
                         </div>
@@ -344,20 +329,7 @@ export default class UIManager {
                               .join("")}
                         </ul>
                         ${
-                          project.impact
-                            ? `
-                            <div style="background: #ffe0b2; border-left: 4px solid #e65100; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem;">
-                                <strong style="color: #e65100;">${t(
-                                  "projects.impact"
-                                )}</strong> <span style="color: #bf360c;">${
-                                project.impact
-                              }</span>
-                            </div>
-                        `
-                            : ""
-                        }
-                        ${
-                          project.github || project.demo
+                          project.github || project.demo || project.docs
                             ? `
                             <div style="display: flex; gap: 0.75rem;">
                                 ${
@@ -374,6 +346,15 @@ export default class UIManager {
                                     ? `
                                     <a href="${project.demo}" target="_blank" style="color: #1b5e20; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
                                         🚀 Demo →
+                                    </a>
+                                `
+                                    : ""
+                                }
+                                ${
+                                  project.docs
+                                    ? `
+                                    <a href="${project.docs}" target="_blank" style="color: #8b5a2b; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
+                                        📚 Docs →
                                     </a>
                                 `
                                     : ""

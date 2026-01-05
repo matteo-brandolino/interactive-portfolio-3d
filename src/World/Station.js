@@ -101,8 +101,22 @@ export default class Station {
   createLabel() {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-    canvas.width = 512;
+
+    // Measure text to calculate optimal width
+    context.font = "Bold 52px Georgia, serif";
+    const title = i18n.t(`${this.data.type}.title`);
+    const textMetrics = context.measureText(title);
+    const textWidth = textMetrics.width;
+
+    // Calculate canvas width with padding (min 512, max 800)
+    const padding = 100;
+    canvas.width = Math.max(512, Math.min(800, textWidth + padding));
     canvas.height = 128;
+
+    // Calculate sprite scale based on canvas width
+    const baseWidth = 512;
+    const baseScale = 1.8;
+    const scaleX = baseScale * (canvas.width / baseWidth);
 
     this.labelCanvas = canvas;
     this.labelContext = context;
@@ -116,7 +130,7 @@ export default class Station {
       opacity: 0,
     });
     this.label = new THREE.Sprite(spriteMaterial);
-    this.label.scale.set(1.8, 0.45, 1);
+    this.label.scale.set(scaleX, 0.45, 1);
 
     if (this.data.type === "info") {
       this.label.position.set(0, 2.5, 0);
