@@ -48,45 +48,49 @@ export const translations = {
     it: {
         info: {
             title: 'Benvenuto',
-            icon: '🏕️'
+            icon: 'info'
         },
 
         work: {
             title: 'Esperienze Lavorative',
-            icon: '💼',
+            icon: 'work',
             technologies: 'Tecnologie:',
             achievements: 'Risultati:'
         },
 
         skills: {
             title: 'Skills Tecniche',
-            icon: '⚡',
+            icon: 'skills',
             year: 'anno',
             years: 'anni',
             softSkillsTitle: 'Soft Skills',
             categories: {
                 frontend: {
                     name: 'Frontend Development',
-                    icon: '🎨'
+                    icon: 'frontend'
                 },
                 backend: {
                     name: 'Backend Development',
-                    icon: '⚙️'
+                    icon: 'backend'
+                },
+                ai: {
+                    name: 'AI & Automazione',
+                    icon: 'ai'
                 },
                 tools: {
                     name: 'Tools & DevOps',
-                    icon: '🛠️'
+                    icon: 'tools'
                 },
                 design: {
                     name: '3D & Design',
-                    icon: '🎭'
+                    icon: 'design'
                 }
             }
         },
 
         projects: {
             title: 'Progetti & OSS',
-            icon: '🚀',
+            icon: 'projects',
             featuredTitle: 'Progetti in Evidenza',
             ossTitle: 'Contributi Open Source',
             impact: 'Impact:',
@@ -99,17 +103,17 @@ export const translations = {
 
         about: {
             title: 'Chi Sono',
-            icon: '👋',
+            icon: 'about',
             bioTitle: 'Chi Sono',
             contactTitle: 'Contattami',
             socialsTitle: 'Social & Links',
             interests: 'Interessi',
+            achievements: 'Obiettivi Raggiunti',
             stats: {
-                yearsExperience: 'Anni Esperienza',
-                projectsCompleted: 'Progetti Completati',
-                coffeeConsumed: 'Caffè Bevuti ☕',
-                linesOfCode: 'Righe di Codice',
-                happyClients: 'Clienti Felici'
+                yearsExperience: 'Anni di Esperienza',
+                githubStars: 'Stelle su GitHub',
+                repositories: 'Repository Pubblici',
+                openSourcePRs: 'Pull Request Merged'
             }
         }
     },
@@ -117,45 +121,49 @@ export const translations = {
 
         info: {
             title: 'Welcome',
-            icon: '🏕️'
+            icon: 'info'
         },
 
         work: {
             title: 'Work Experience',
-            icon: '💼',
+            icon: 'work',
             technologies: 'Technologies:',
             achievements: 'Achievements:'
         },
 
         skills: {
             title: 'Technical Skills',
-            icon: '⚡',
+            icon: 'skills',
             year: 'year',
             years: 'years',
             softSkillsTitle: 'Soft Skills',
             categories: {
                 frontend: {
                     name: 'Frontend Development',
-                    icon: '🎨'
+                    icon: 'frontend'
                 },
                 backend: {
                     name: 'Backend Development',
-                    icon: '⚙️'
+                    icon: 'backend'
+                },
+                ai: {
+                    name: 'AI & Automation',
+                    icon: 'ai'
                 },
                 tools: {
                     name: 'Tools & DevOps',
-                    icon: '🛠️'
+                    icon: 'tools'
                 },
                 design: {
                     name: '3D & Design',
-                    icon: '🎭'
+                    icon: 'design'
                 }
             }
         },
 
         projects: {
             title: 'Projects & OSS',
-            icon: '🚀',
+            icon: 'projects',
             featuredTitle: 'Featured Projects',
             ossTitle: 'Open Source Contributions',
             impact: 'Impact:',
@@ -168,17 +176,17 @@ export const translations = {
 
         about: {
             title: 'About Me',
-            icon: '👋',
+            icon: 'about',
             bioTitle: 'About Me',
             contactTitle: 'Contact Me',
             socialsTitle: 'Social & Links',
             interests: 'Interests',
+            achievements: 'Achievements',
             stats: {
-                yearsExperience: 'Years Experience',
-                projectsCompleted: 'Projects Completed',
-                coffeeConsumed: 'Coffee Consumed ☕',
-                linesOfCode: 'Lines of Code',
-                happyClients: 'Happy Clients'
+                yearsExperience: 'Years of Experience',
+                githubStars: 'GitHub Stars',
+                repositories: 'Public Repositories',
+                openSourcePRs: 'Merged Pull Requests'
             }
         }
     }

@@ -1,251 +1,323 @@
-
 export const cvDataEN = {
-
-    info: {
-        welcome: 'Welcome to my interactive 3D portfolio!',
-        description: 'This is a portfolio inspired by Bruno Simon\'s work. Explore the island to discover my experiences, skills and projects.',
-        controlsTitle: 'Controls',
-        stationsTitle: 'Island Stations',
-        tip: 'Explore the island and approach the wooden stations to discover the contents. Press',
-        tipKey: 'Space',
-        tipAction: 'to interact!',
-        controls: {
-            desktop: [
-                { key: 'W', action: 'Move forward' },
-                { key: 'A', action: 'Move left' },
-                { key: 'S', action: 'Move backward' },
-                { key: 'D', action: 'Move right' },
-                { key: 'Space', action: 'Interact with stations' },
-                { key: 'ESC', action: 'Close panels' }
-            ]
-        },
-        stations: [
-            '💼 Work Experience - Discover my professional journey',
-            '⚡ Technical Skills - My technical competencies',
-            '🚀 Projects & OSS - My projects and open source contributions',
-            '👋 About Me - Personal information and contacts'
-        ]
+  info: {
+    welcome: "Welcome to my interactive 3D portfolio!",
+    description:
+      "This is a portfolio inspired by Bruno Simon's work. Explore the island to discover my experiences, skills and projects.",
+    controlsTitle: "Controls",
+    stationsTitle: "Island Stations",
+    tip: "Explore the island and approach the wooden stations to discover the contents. Press",
+    tipKey: "Space",
+    tipAction: "to interact!",
+    controls: {
+      desktop: [
+        { key: "W", action: "Move forward" },
+        { key: "A", action: "Move left" },
+        { key: "S", action: "Move backward" },
+        { key: "D", action: "Move right" },
+        { key: "Space", action: "Interact with stations" },
+        { key: "ESC", action: "Close panels" },
+      ],
     },
+    stations: [
+      "💼 Work Experience - Discover my professional journey",
+      "⚡ Technical Skills - My technical competencies",
+      "🚀 Projects & OSS - My projects and open source contributions",
+      "👋 About Me - Personal information and contacts",
+    ],
+  },
 
-    work: {
-        experiences: [
-            {
-                role: 'Senior Full Stack Developer',
-                company: 'Tech Company S.r.l.',
-                period: '2022 - Present',
-                location: 'Milan, Italy',
-                description: 'Development of modern web applications with focus on performance and user experience. Working with international teams on enterprise projects.',
-                technologies: ['React', 'Node.js', 'Three.js', 'MongoDB', 'AWS'],
-                achievements: [
-                    'Implemented 3D interactive dashboard that increased engagement by 40%',
-                    'Performance optimization that reduced loading times by 60%',
-                    'Mentoring of 3 junior developers'
-                ]
-            },
-            {
-                role: 'Full Stack Developer',
-                company: 'Digital Agency',
-                period: '2020 - 2022',
-                location: 'Rome, Italy',
-                description: 'Development of websites and applications for national and international clients.',
-                technologies: ['Vue.js', 'Express', 'PostgreSQL', 'Docker'],
-                achievements: [
-                    'Development of 15+ successful web projects',
-                    'CI/CD pipeline implementation',
-                    'Team training on modern best practices'
-                ]
-            },
-            {
-                role: 'Junior Developer',
-                company: 'Innovative Startup',
-                period: '2019 - 2020',
-                location: 'Milan, Italy',
-                description: 'First professional role, focus on frontend development and fast learning.',
-                technologies: ['JavaScript', 'HTML5', 'CSS3', 'Git'],
-                achievements: [
-                    'Contributed to MVP launch in 6 months',
-                    'Development of reusable UI components'
-                ]
-            }
-        ]
-    },
-
-    skills: {
-        categories: {
-            frontend: {
-                skills: [
-                    { name: 'JavaScript/TypeScript', level: 95, years: 5 },
-                    { name: 'React', level: 90, years: 4 },
-                    { name: 'Vue.js', level: 85, years: 3 },
-                    { name: 'Three.js', level: 80, years: 2 },
-                    { name: 'HTML5/CSS3', level: 95, years: 6 },
-                    { name: 'TailwindCSS', level: 90, years: 3 },
-                    { name: 'GSAP', level: 85, years: 2 }
-                ]
-            },
-            backend: {
-                skills: [
-                    { name: 'Node.js', level: 90, years: 4 },
-                    { name: 'Express', level: 85, years: 4 },
-                    { name: 'Python', level: 75, years: 3 },
-                    { name: 'PostgreSQL', level: 80, years: 3 },
-                    { name: 'MongoDB', level: 85, years: 3 },
-                    { name: 'Redis', level: 70, years: 2 }
-                ]
-            },
-            tools: {
-                skills: [
-                    { name: 'Git', level: 95, years: 6 },
-                    { name: 'Docker', level: 85, years: 3 },
-                    { name: 'AWS', level: 75, years: 2 },
-                    { name: 'Vite', level: 90, years: 2 },
-                    { name: 'Webpack', level: 80, years: 3 },
-                    { name: 'CI/CD', level: 80, years: 3 }
-                ]
-            },
-            design: {
-                skills: [
-                    { name: 'Three.js', level: 85, years: 2 },
-                    { name: 'Blender (Basic)', level: 60, years: 1 },
-                    { name: 'Figma', level: 75, years: 3 },
-                    { name: 'WebGL', level: 70, years: 2 }
-                ]
-            }
-        },
-        softSkills: [
-            'Problem Solving',
-            'Team Leadership',
-            'Effective Communication',
-            'Project Management',
-            'Mentoring',
-            'Continuous Learning'
-        ]
-    },
-
-    projects: {
-        featured: [
-            {
-                name: '3D Interactive Portfolio',
-                type: 'Personal Project',
-                description: 'Personal portfolio inspired by Bruno Simon with 3D island, animated character and interactive stations.',
-                technologies: ['Three.js', 'Vite', 'GSAP', 'WebGL'],
-                features: [
-                    'Free WASD movement on 3D island',
-                    'Mobile support with virtual joystick',
-                    'Smooth animations with GSAP',
-                    'Performance-optimized 3D models'
-                ],
-                github: 'https://github.com/matteo/portfolio-3d',
-                demo: 'https://matteo-portfolio.dev',
-                status: 'In Development'
-            },
-            {
-                name: 'Real-time 3D Dashboard',
-                type: 'Work Project',
-                description: 'Interactive dashboard for 3D data visualization with animated charts and real-time metrics.',
-                technologies: ['React', 'Three.js', 'WebSocket', 'D3.js'],
-                features: [
-                    'Real-time 3D data visualization',
-                    'Interactive charts with zoom/pan',
-                    'Push notifications for alerts',
-                    'Data export in multiple formats'
-                ],
-                impact: '40% increase in user engagement',
-                status: 'Production'
-            },
-            {
-                name: 'E-commerce Platform',
-                type: 'Freelance',
-                description: 'Complete e-commerce platform with product management, cart, payments and admin dashboard.',
-                technologies: ['Vue.js', 'Node.js', 'Stripe', 'MongoDB'],
-                features: [
-                    'Integrated payment system',
-                    'Automated inventory management',
-                    'Advanced analytics dashboard',
-                    'SEO optimized'
-                ],
-                impact: '€500k+ revenue first year',
-                status: 'Production'
-            }
+  work: {
+    experiences: [
+      {
+        role: "Software Developer",
+        company: "EsoSphera",
+        period: "Apr 2021 - Present",
+        location: "Piombino Dese, Veneto, Italy",
+        description:
+          "Development of web applications and APIs, design and maintenance of chatbots and voicebots for customer care. Utilizing LLMs to create intelligent solutions and automate conversational flows.",
+        technologies: [
+          "PHP (Yii2)",
+          "JavaScript",
+          "Node.js",
+          "TypeScript",
+          "Python",
+          "PostgreSQL",
+          "Node-RED",
+          "LLM",
         ],
-        openSource: [
-            {
-                name: 'three-utils',
-                description: 'Utility library for Three.js with helpers for performance and debugging.',
-                role: 'Creator & Maintainer',
-                stars: 234,
-                contributions: 'Complete creation and maintenance',
-                github: 'https://github.com/matteo/three-utils',
-                language: 'JavaScript'
-            },
-            {
-                name: 'Three.js',
-                description: 'Contributions to Three.js: bug fixes, documentation and examples.',
-                role: 'Contributor',
-                contributions: '8 merged PRs, documentation improvements',
-                github: 'https://github.com/mrdoob/three.js',
-                language: 'JavaScript'
-            },
-            {
-                name: 'Vite Plugins',
-                description: 'Development of Vite plugins for 3D asset optimization.',
-                role: 'Contributor',
-                contributions: '3 merged PRs',
-                github: 'https://github.com/vitejs/vite',
-                language: 'TypeScript'
-            }
-        ]
-    },
+        achievements: [
+          "Developed web applications and RESTful APIs using Yii2 framework",
+          "Designed and maintained chatbots and voicebots for customer care via Node-RED",
+          "Integrated LLMs for dynamic responses, automatic summarization, and request classification",
+          "Managed and designed PostgreSQL databases with complex queries and optimization",
+          "Developed intelligent solutions with third-party service integration",
+        ],
+      },
+      {
+        role: "Full Stack Developer",
+        company: "Salchain SRL",
+        period: "Sep 2020 - Apr 2021",
+        location: "Remote",
+        description:
+          "Complete development of a social media platform from scratch using the MERN stack. Managed web projects from design to production deployment.",
+        technologies: [
+          "MongoDB",
+          "Express.js",
+          "React",
+          "Node.js",
+          "AWS",
+          "GitLab CI/CD",
+          "Laravel",
+          "PHP",
+          "MySQL",
+        ],
+        achievements: [
+          "Built complete social media platform using MERN stack",
+          "Deployed on AWS with CI/CD pipeline integration via GitLab",
+          "Designed and developed websites, managing all development phases",
+          "Provided technical support and bug fixes for Laravel and MySQL client projects",
+        ],
+      },
+    ],
+  },
 
-    about: {
-        bio: {
-            intro: 'Hi! I\'m Matteo, a creative developer passionate about 3D graphics and immersive web experiences.',
-            background: 'With over 5 years of experience in web development, I\'ve specialized in creating interactive experiences that combine appealing design and optimal performance. My passion for 3D web was born exploring Bruno Simon\'s portfolio, which inspired me to create this project.',
-            passion: 'I love exploring the frontiers of modern web, experimenting with WebGL, Three.js and emerging technologies. I believe the web of the future will be increasingly immersive and three-dimensional.',
-            approach: 'My approach combines solid technical skills with attention to detail and user experience. Each project is an opportunity to learn something new and push beyond limits.',
-            interests: [
-                '🎮 Gaming and game design',
-                '🎨 3D graphics and animation',
-                '📚 Continuous learning',
-                '🏃 Running and sports',
-                '🎵 Electronic music',
-                '✈️ Travel and different cultures'
-            ]
+  skills: {
+    categories: {
+      frontend: {
+        skills: [
+          { name: "JavaScript/TypeScript", level: 90, years: 5 },
+          { name: "React", level: 85, years: 4 },
+          { name: "Vue.js", level: 80, years: 3 },
+          { name: "Next.js", level: 85, years: 2 },
+          { name: "HTML5/CSS3", level: 90, years: 5 },
+          { name: "TailwindCSS", level: 85, years: 3 },
+          { name: "Three.js", level: 75, years: 1 },
+        ],
+      },
+      backend: {
+        skills: [
+          { name: "Node.js", level: 90, years: 5 },
+          { name: "PHP (Yii2)", level: 85, years: 4 },
+          { name: "Python", level: 80, years: 3 },
+          { name: "PostgreSQL", level: 85, years: 4 },
+          { name: "MongoDB", level: 80, years: 3 },
+          { name: "Express", level: 85, years: 4 },
+        ],
+      },
+      ai: {
+        skills: [
+          { name: "LLM Integration", level: 85, years: 2 },
+          { name: "RAG Systems", level: 80, years: 1 },
+          { name: "Node-RED", level: 85, years: 4 },
+          { name: "OpenAI API", level: 85, years: 2 },
+          { name: "AI Agents", level: 75, years: 1 },
+        ],
+      },
+      tools: {
+        skills: [
+          { name: "Git", level: 95, years: 6 },
+          { name: "Docker", level: 75, years: 3 },
+          { name: "AWS", level: 70, years: 2 },
+          { name: "CI/CD (GitLab)", level: 75, years: 3 },
+          { name: "Vite", level: 85, years: 2 },
+        ],
+      },
+    },
+    softSkills: [
+      "Problem Solving",
+      "Effective Communication",
+      "Continuous Learning",
+      "Team Collaboration",
+      "Technical Documentation",
+      "Customer Care Solutions",
+    ],
+  },
+
+  projects: {
+    featured: [
+      {
+        name: "Notes RAG",
+        type: "Personal Project",
+        description:
+          "Full-stack RAG application with semantic search, AI chat, and interactive knowledge base visualization.",
+        technologies: [
+          "Next.js 16",
+          "TypeScript",
+          "PostgreSQL",
+          "pgvector",
+          "OpenAI GPT-4o",
+          "Vercel AI SDK",
+          "Drizzle ORM",
+          "shadcn-ui",
+          "React Flow",
+        ],
+        features: [
+          "Semantic search using OpenAI embeddings and vector database",
+          "AI-powered chat with context-aware responses",
+          "Interactive RAG visualization with node graphs",
+          "Automatic text chunking and embedding generation",
+          "Comprehensive testing with Vitest",
+        ],
+        github: "https://github.com/matteo-brandolino/notes-rag",
+        status: "In Development",
+      },
+      {
+        name: "AG2 Email Management",
+        type: "Personal Project",
+        description:
+          "Intelligent email triage system using AG2 swarm agents for automated Gmail management.",
+        technologies: [
+          "Python",
+          "AG2 Framework",
+          "OpenAI API",
+          "Gmail API",
+          "Streamlit",
+        ],
+        features: [
+          "Swarm agent architecture for collaborative email processing",
+          "Batch filtering and classification of non-critical emails",
+          "Email summarization and response drafting",
+          "Secure OAuth 2.0 authentication",
+          "Tool integration for automated actions",
+        ],
+        github: "https://github.com/matteo-brandolino/ag2-email-management",
+        status: "Completed",
+      },
+      {
+        name: "Cheshire Cat React Widget",
+        type: "Open Source",
+        description:
+          "TypeScript React chat widget for Cheshire Cat AI platform with comprehensive customization.",
+        technologies: [
+          "React",
+          "TypeScript",
+          "Tailwind CSS",
+          "WebSocket",
+          "Vitest",
+          "tsup",
+        ],
+        features: [
+          "Dark/light theming with customizable styling",
+          "File upload and voice recording support",
+          "WebSocket communication with error handling",
+          "Full TypeScript type definitions",
+          "Message callbacks and event handlers",
+        ],
+        github: "https://github.com/matteo-brandolino/widget-ccat-react-ts",
+        impact: "Official Cheshire Cat AI client",
+        status: "Production",
+      },
+      {
+        name: "Interactive 3D Portfolio",
+        type: "Personal Project",
+        description:
+          "Bruno Simon-inspired portfolio with explorable 3D island and interactive stations.",
+        technologies: ["Three.js", "Vite", "GSAP", "WebGL", "JavaScript"],
+        features: [
+          "Free WASD movement on 3D island",
+          "Mobile support with virtual joystick",
+          "Bilingual support (IT/EN)",
+          "Interactive stations with CV content",
+          "Optimized 3D models and animations",
+        ],
+        github: "https://github.com/matteo-brandolino/interactive-portfolio-3d",
+        status: "In Development",
+      },
+    ],
+    openSource: [
+      {
+        name: "ElizaOS Plugin Registry",
+        description:
+          "Added @pyboom/plugin-moralis-v2 plugin to ElizaOS registry",
+        role: "Contributor",
+        contributions:
+          "Registered Moralis DeFi plugin for Solana blockchain data",
+        github: "https://github.com/elizaos-plugins/registry/pull/235",
+        status: "Merged",
+      },
+      {
+        name: "Cheshire Cat AI - React Client",
+        description:
+          "TypeScript React client implementation for Cheshire Cat AI",
+        role: "Contributor",
+        contributions:
+          "Complete React widget development with feature parity to Vue client",
+        github: "https://github.com/cheshire-cat-ai/docs/pull/221",
+        status: "Merged",
+      },
+      {
+        name: "Cheshire Cat AI - Vision PDF Parser",
+        description:
+          "Plugin for PDF content extraction and translation with vision capabilities",
+        role: "Creator",
+        contributions:
+          "Developed plugin for PDF parsing with vision AI support",
+        github: "https://github.com/cheshire-cat-ai/plugins/pull/130",
+        status: "Merged",
+      },
+      {
+        name: "ElizaOS Moralis Plugin",
+        description: "Refactored plugin actions for Eliza v2 compatibility",
+        role: "Contributor",
+        contributions: "Updated plugin architecture for Eliza v2",
+        github: "https://github.com/elizaos-plugins/plugin-moralis/pull/1",
+        status: "Open",
+      },
+      {
+        name: "Scaffold-ETH Challenges",
+        description: "Fixed contract method in Challenge 1 tests",
+        role: "Contributor",
+        contributions: "Corrected typo in tests (mintItem → stake)",
+        github: "https://github.com/scaffold-eth/se-2-challenges/pull/201",
+        status: "Merged",
+      },
+      {
+        name: "Various Contributions",
+        description: "Documentation fixes, HTML corrections, ElizaOS tutorials",
+        role: "Contributor",
+        contributions: "5+ PRs for documentation improvements and bug fixes",
+        github: "https://github.com/matteo-brandolino",
+        status: "Mixed",
+      },
+    ],
+  },
+
+  about: {
+    bio: {
+      intro:
+        "Hi! I'm Matteo, a software developer with over 4 years of experience specialized in web applications, generative AI, and intelligent conversational systems. I primarily work with Node.js, TypeScript, Python, and PostgreSQL.",
+      passion:
+        "I'm passionate about Large Language Models, RAG systems, and AI agents. I actively contribute to open source projects and believe in continuous learning.",
+      interests: [
+        { icon: "ai", text: "Artificial intelligence and LLMs" },
+        { icon: "messageSquare", text: "Chatbots and conversational systems" },
+        { icon: "globe", text: "Full-stack web development" },
+        { icon: "bookOpen", text: "Continuous learning" },
+        { icon: "gitBranch", text: "Open source contributions" },
+      ],
+    },
+    contact: {
+      email: "matteo.brandolino@gmail.com",
+      location: "Piombino Dese, Veneto, Italy",
+      socials: {
+        github: {
+          url: "https://github.com/matteo-brandolino",
+          username: "@matteo-brandolino",
+          icon: "💻",
         },
-        contact: {
-            email: 'matteo.developer@example.com',
-            phone: '+39 123 456 7890',
-            location: 'Milan, Italy',
-            availability: 'Available for freelance projects and collaborations',
-            socials: {
-                github: {
-                    url: 'https://github.com/matteo',
-                    username: '@matteo',
-                    icon: '💻'
-                },
-                linkedin: {
-                    url: 'https://linkedin.com/in/matteo-dev',
-                    username: 'Matteo Developer',
-                    icon: '💼'
-                },
-                twitter: {
-                    url: 'https://twitter.com/matteo_dev',
-                    username: '@matteo_dev',
-                    icon: '🐦'
-                },
-                codepen: {
-                    url: 'https://codepen.io/matteo',
-                    username: '@matteo',
-                    icon: '🖊️'
-                }
-            }
+        linkedin: {
+          url: "https://www.linkedin.com/in/matteo-brandolino",
+          username: "Matteo Brandolino",
+          icon: "💼",
         },
-        stats: {
-            yearsExperience: 5,
-            projectsCompleted: 50,
-            coffeeConsumed: 9999,
-            linesOfCode: 500000,
-            happyClients: 30
-        }
-    }
-}
+      },
+    },
+    stats: {
+      yearsExperience: 4,
+      projectsCompleted: 30,
+      githubStars: 93,
+      openSourcePRs: 10,
+      repositories: 57,
+    },
+  },
+};

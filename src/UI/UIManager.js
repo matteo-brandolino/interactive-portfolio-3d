@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { cvData, getCVData } from "../data/cv-data.js";
 import { i18n } from "../data/i18n.js";
+import { createIcon } from "../Utils/Icons.js";
 
 export default class UIManager {
   constructor() {
@@ -80,9 +81,14 @@ export default class UIManager {
       )
       .join("");
 
+    const headerIcon = createIcon(t("info.icon"), {
+      size: 24,
+      color: "#8b5a2b",
+    });
+
     return `
             <div class="panel-header">
-                <div class="panel-title">${t("info.icon")} ${t("info.title")}</div>
+                <div class="panel-title">${headerIcon} ${t("info.title")}</div>
                 <button class="close-btn" data-panel="info">×</button>
             </div>
             <div class="panel-content">
@@ -109,7 +115,11 @@ export default class UIManager {
 
                 <div style="background: rgba(212, 165, 116, 0.3); padding: 1rem; border-radius: 8px; border: 2px solid #8b5a2b; margin-top: 1.5rem;">
                     <p style="color: #3e2723; font-style: italic; margin: 0;">
-                        💡 ${data.tip} <kbd style="background: #8b5a2b; color: #f5e6d3; padding: 0.15rem 0.5rem; border-radius: 4px; font-family: monospace;">${data.tipKey}</kbd> ${data.tipAction}
+                        💡 ${
+                          data.tip
+                        } <kbd style="background: #8b5a2b; color: #f5e6d3; padding: 0.15rem 0.5rem; border-radius: 4px; font-family: monospace;">${
+      data.tipKey
+    }</kbd> ${data.tipAction}
                     </p>
                 </div>
             </div>
@@ -177,11 +187,14 @@ export default class UIManager {
       )
       .join("");
 
+    const headerIcon = createIcon(t("work.icon"), {
+      size: 24,
+      color: "#8b5a2b",
+    });
+
     return `
             <div class="panel-header">
-                <div class="panel-title">${t("work.icon")} ${t(
-      "work.title"
-    )}</div>
+                <div class="panel-title">${headerIcon} ${t("work.title")}</div>
                 <button class="close-btn" data-panel="work">×</button>
             </div>
             <div class="panel-content">
@@ -196,10 +209,14 @@ export default class UIManager {
       .map((catKey) => {
         const category = data.categories[catKey];
         const catTranslation = t(`skills.categories.${catKey}`);
+        const categoryIcon = createIcon(catTranslation.icon, {
+          size: 22,
+          color: "#3e2723",
+        });
         return `
             <div style="margin-bottom: 2rem;">
                 <h3 style="font-size: 1.125rem; font-weight: 600; color: #3e2723; margin-bottom: 1rem;">
-                    ${catTranslation.icon} ${catTranslation.name}
+                    ${categoryIcon} ${catTranslation.name}
                 </h3>
                 ${category.skills
                   .map(
@@ -248,9 +265,14 @@ export default class UIManager {
             </div>
         `;
 
+    const headerIcon = createIcon(t("skills.icon"), {
+      size: 24,
+      color: "#8b5a2b",
+    });
+
     return `
             <div class="panel-header">
-                <div class="panel-title">${t("skills.icon")} ${t(
+                <div class="panel-title">${headerIcon} ${t(
       "skills.title"
     )}</div>
                 <button class="close-btn" data-panel="skills">×</button>
@@ -417,9 +439,14 @@ export default class UIManager {
             </div>
         `;
 
+    const headerIcon = createIcon(t("projects.icon"), {
+      size: 24,
+      color: "#8b5a2b",
+    });
+
     return `
             <div class="panel-header">
-                <div class="panel-title">${t("projects.icon")} ${t(
+                <div class="panel-title">${headerIcon} ${t(
       "projects.title"
     )}</div>
                 <button class="close-btn" data-panel="projects">×</button>
@@ -433,115 +460,111 @@ export default class UIManager {
 
   getAboutContent(data) {
     const t = i18n.t.bind(i18n);
-    let statsHTML = `
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2rem;">
-                ${Object.entries(data.stats)
-                  .map(([key, value]) => {
-                    return `
-                        <div style="background: linear-gradient(135deg, #4a7c59 0%, #2d5f3f 100%); padding: 1.5rem; border-radius: 12px; text-align: center; color: white; border: 2px solid #81c784; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-                            <div style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-                                ${value.toLocaleString()}${
-                      key === "coffeeConsumed" ? "+" : ""
-                    }
-                            </div>
-                            <div style="font-size: 0.875rem; opacity: 0.95;">
-                                ${t(`about.stats.${key}`)}
-                            </div>
-                        </div>
-                    `;
-                  })
-                  .join("")}
-            </div>
-        `;
 
-    let bioHTML = `
-            <div style="margin-bottom: 2rem;">
-                <h3 style="font-size: 1.25rem; font-weight: 600; color: #3e2723; margin-bottom: 1rem;">
-                    ${t("about.bioTitle")}
-                </h3>
-                <p style="color: #4a3728; margin-bottom: 1rem; line-height: 1.7;">
-                    ${data.bio.intro}
-                </p>
-                <p style="color: #4a3728; margin-bottom: 1rem; line-height: 1.7;">
-                    ${data.bio.background}
-                </p>
-                <p style="color: #4a3728; margin-bottom: 1rem; line-height: 1.7;">
-                    ${data.bio.passion}
-                </p>
-                <p style="color: #4a3728; margin-bottom: 1.5rem; line-height: 1.7;">
-                    ${data.bio.approach}
-                </p>
-                <div style="background: rgba(255, 255, 255, 0.4); padding: 1.5rem; border-radius: 8px; border: 2px solid #8b5a2b;">
-                    <h4 style="font-size: 1rem; font-weight: 600; color: #3e2723; margin-bottom: 1rem;">
-                        ${t("about.interests")}
-                    </h4>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
-                        ${data.bio.interests
-                          .map(
-                            (interest) => `
-                            <div style="color: #4a3728; font-size: 0.875rem;">
-                                ${interest}
-                            </div>
-                        `
-                          )
-                          .join("")}
-                    </div>
-                </div>
-            </div>
-        `;
+    const bioHTML = `
+      <div style="margin-bottom: 2rem;">
+        <p style="color: #4a3728; line-height: 1.6; margin-bottom: 1rem;">
+          ${data.bio.intro}
+        </p>
+        <p style="color: #4a3728; line-height: 1.6;">
+          ${data.bio.passion}
+        </p>
+      </div>
+    `;
 
-    let contactHTML = `
-            <div style="background: linear-gradient(135deg, #4a7c59 0%, #2d5f3f 100%); padding: 2rem; border-radius: 12px; color: white; border: 2px solid #81c784; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-                <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
-                    ${t("about.contactTitle")}
-                </h3>
-                <div style="margin-bottom: 1.5rem;">
-                    <div style="margin-bottom: 0.75rem;">
-                        <strong>📧 Email:</strong> ${data.contact.email}
-                    </div>
-                    <div style="margin-bottom: 0.75rem;">
-                        <strong>📱 Telefono:</strong> ${data.contact.phone}
-                    </div>
-                    <div style="margin-bottom: 0.75rem;">
-                        <strong>📍 Location:</strong> ${data.contact.location}
-                    </div>
-                    <div style="background: rgba(255,255,255,0.2); padding: 0.75rem; border-radius: 6px; margin-top: 1rem; border: 1px solid rgba(255,255,255,0.3);">
-                        <strong>✅</strong> ${data.contact.availability}
-                    </div>
-                </div>
-                <div>
-                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem;">
-                        ${t("about.socialsTitle")}
-                    </h4>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
-                        ${Object.values(data.contact.socials)
-                          .map(
-                            (social) => `
-                            <a href="${social.url}" target="_blank" style="background: rgba(255,255,255,0.2); padding: 0.75rem; border-radius: 6px; text-decoration: none; color: white; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; border: 1px solid rgba(255,255,255,0.3);">
-                                <span style="font-size: 1.25rem;">${social.icon}</span>
-                                <span style="font-size: 0.875rem;">${social.username}</span>
-                            </a>
-                        `
-                          )
-                          .join("")}
-                    </div>
-                </div>
+    const interestsHTML = `
+      <div style="margin-bottom: 2rem;">
+        <h4 style="color: #3e2723; margin-bottom: 0.75rem; font-size: 1.1rem;">
+          ${t("about.interests")}
+        </h4>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+          ${data.bio.interests
+            .map(
+              (interest) => `
+            <div style="color: #4a3728; font-size: 0.95rem; padding: 0.4rem 0; display: flex; align-items: center; gap: 0.5rem;">
+              ${createIcon(interest.icon, { size: 18, color: "#8b5a2b" })}
+              <span>${interest.text}</span>
             </div>
-        `;
+          `
+            )
+            .join("")}
+        </div>
+      </div>
+    `;
+
+    const contactHTML = `
+      <div style="margin-bottom: 2rem; padding: 1.5rem; background: #f4e4c1; border: 2px solid #d4a574; border-radius: 8px;">
+        <h3 style="color: #3e2723; margin-bottom: 1.25rem; font-size: 1.3rem;">
+          ${t("about.contactTitle")}
+        </h3>
+
+        <div style="margin-bottom: 1rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+            ${createIcon("mail", { size: 18, color: "#8b5a2b" })}
+            <span style="color: #6d5438; font-size: 0.9rem;">Email:</span>
+          </div>
+          <a href="mailto:${
+            data.contact.email
+          }" style="color: #2d5f3f; text-decoration: underline; font-weight: 600; margin-left: 1.75rem;">
+            ${data.contact.email}
+          </a>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            ${createIcon("mapPin", { size: 18, color: "#8b5a2b" })}
+            <span style="color: #6d5438; font-size: 0.9rem;">Location:</span>
+          </div>
+          <span style="color: #4a3728; margin-left: 1.75rem;">${
+            data.contact.location
+          }</span>
+        </div>
+      </div>
+    `;
+
+    const socialsHTML = `
+      <div>
+        <h4 style="color: #3e2723; margin-bottom: 1rem; font-size: 1.1rem;">
+          ${t("about.socialsTitle")}
+        </h4>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <a href="${data.contact.socials.github.url}"
+             target="_blank"
+             style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: white; border: 2px solid #d4a574; border-radius: 6px; text-decoration: none; transition: all 0.2s;">
+            ${createIcon("github", { size: 20, color: "#8b5a2b" })}
+            <span style="color: #3e2723; font-weight: 600;">${
+              data.contact.socials.github.username
+            }</span>
+          </a>
+          <a href="${data.contact.socials.linkedin.url}"
+             target="_blank"
+             style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: white; border: 2px solid #d4a574; border-radius: 6px; text-decoration: none; transition: all 0.2s;">
+            ${createIcon("linkedin", { size: 20, color: "#8b5a2b" })}
+            <span style="color: #3e2723; font-weight: 600;">${
+              data.contact.socials.linkedin.username
+            }</span>
+          </a>
+        </div>
+      </div>
+    `;
+
+    const headerIcon = createIcon(t("about.icon"), {
+      size: 24,
+      color: "#8b5a2b",
+    });
 
     return `
-            <div class="panel-header">
-                <div class="panel-title">${t("about.icon")} ${t(
-      "about.title"
-    )}</div>
-                <button class="close-btn" data-panel="about">×</button>
-            </div>
-            <div class="panel-content">
-                ${statsHTML}
-                ${bioHTML}
-                ${contactHTML}
-            </div>
-        `;
+      <div class="panel-header">
+        <div class="panel-title">${headerIcon} ${t("about.title")}</div>
+        <button class="close-btn" data-panel="about">×</button>
+      </div>
+      <div class="panel-content">
+        ${bioHTML}
+        ${interestsHTML}
+        ${contactHTML}
+        ${socialsHTML}
+      </div>
+    `;
   }
 
   reloadPanels() {
