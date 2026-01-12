@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { Sky } from "three/addons/objects/Sky.js";
 import Sizes from "../Utils/Sizes.js";
 import Time from "../Utils/Time.js";
 import Resources from "../Utils/Resources.js";
@@ -63,6 +64,7 @@ export default class Experience {
     this.camera = new Camera();
     this.renderer = new Renderer();
     this.setLights();
+    this.setSky();
 
     this.resources.on("loaded", (progress) => {
       const progressBar = document.getElementById("progress-bar-fill");
@@ -97,13 +99,13 @@ export default class Experience {
   }
 
   setLights() {
-    this.ambientLight = new THREE.AmbientLight("#ffffff", 0.5);
+    this.ambientLight = new THREE.AmbientLight("#fff5e6", 0.6);
     this.scene.add(this.ambientLight);
 
-    this.hemisphereLight = new THREE.HemisphereLight("#87ceeb", "#6b8e23", 0.6);
+    this.hemisphereLight = new THREE.HemisphereLight("#ffd89b", "#b89968", 0.7);
     this.scene.add(this.hemisphereLight);
 
-    this.directionalLight = new THREE.DirectionalLight("#ffffff", 0.8);
+    this.directionalLight = new THREE.DirectionalLight("#fffaf0", 0.9);
     this.directionalLight.position.set(5, 8, 5);
     this.directionalLight.castShadow = true;
     this.directionalLight.shadow.mapSize.set(256, 256);
@@ -113,6 +115,33 @@ export default class Experience {
     this.directionalLight.shadow.camera.top = 8;
     this.directionalLight.shadow.camera.bottom = -8;
     this.scene.add(this.directionalLight);
+  }
+
+  setSky() {
+    this.sky = new Sky();
+    this.sky.scale.setScalar(10000);
+    this.scene.add(this.sky);
+
+    const skyUniforms = this.sky.material.uniforms;
+
+    skyUniforms["turbidity"].value = 10;
+    skyUniforms["rayleigh"].value = 2;
+    skyUniforms["mieCoefficient"].value = 0.005;
+    skyUniforms["mieDirectionalG"].value = 0.8;
+
+    const sun = new THREE.Vector3();
+    const pmremGenerator = new THREE.PMREMGenerator(this.renderer.instance);
+
+    const phi = THREE.MathUtils.degToRad(90 - 2);
+    const theta = THREE.MathUtils.degToRad(180);
+
+    sun.setFromSphericalCoords(1, phi, theta);
+
+    skyUniforms["sunPosition"].value.copy(sun);
+
+    this.scene.environment = pmremGenerator.fromScene(this.sky).texture;
+
+    this.sun = sun;
   }
 
   hideLoadingScreen() {

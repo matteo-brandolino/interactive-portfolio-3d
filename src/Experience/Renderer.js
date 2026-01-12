@@ -1,43 +1,41 @@
-import * as THREE from 'three'
-import Experience from './Experience.js'
+import * as THREE from "three";
+import Experience from "./Experience.js";
 
 export default class Renderer {
-    constructor() {
-        this.experience = new Experience()
-        this.canvas = this.experience.canvas
-        this.sizes = this.experience.sizes
-        this.scene = this.experience.scene
-        this.camera = this.experience.camera
+  constructor() {
+    this.experience = new Experience();
+    this.canvas = this.experience.canvas;
+    this.sizes = this.experience.sizes;
+    this.scene = this.experience.scene;
+    this.camera = this.experience.camera;
 
-        this.setInstance()
-    }
+    this.setInstance();
+  }
 
-    setInstance() {
-        this.instance = new THREE.WebGLRenderer({
-            canvas: this.canvas,
-            antialias: false,
-            alpha: true,
-            powerPreference: 'high-performance'
-        })
-        this.instance.setSize(this.sizes.width, this.sizes.height)
-        this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
-        this.instance.setClearColor('#87ceeb', 1)
+  setInstance() {
+    this.instance = new THREE.WebGLRenderer({
+      canvas: this.canvas,
+      antialias: false,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
+    this.instance.setSize(this.sizes.width, this.sizes.height);
+    this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2));
+    this.instance.shadowMap.enabled = true;
+    this.instance.shadowMap.type = THREE.BasicShadowMap;
+    this.instance.shadowMap.autoUpdate = true;
 
-        this.instance.shadowMap.enabled = true
-        this.instance.shadowMap.type = THREE.BasicShadowMap
-        this.instance.shadowMap.autoUpdate = true
+    this.instance.outputColorSpace = THREE.SRGBColorSpace;
+    this.instance.toneMapping = THREE.ACESFilmicToneMapping;
+    this.instance.toneMappingExposure = 1.6;
+  }
 
-        this.instance.outputColorSpace = THREE.SRGBColorSpace
-        this.instance.toneMapping = THREE.ACESFilmicToneMapping
-        this.instance.toneMappingExposure = 1.5
-    }
+  resize() {
+    this.instance.setSize(this.sizes.width, this.sizes.height);
+    this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2));
+  }
 
-    resize() {
-        this.instance.setSize(this.sizes.width, this.sizes.height)
-        this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
-    }
-
-    update() {
-        this.instance.render(this.scene, this.camera.instance)
-    }
+  update() {
+    this.instance.render(this.scene, this.camera.instance);
+  }
 }

@@ -13,7 +13,7 @@ export default class Character {
     this.moveSpeed = 5;
     this.rotationSpeed = 3;
     this.rotation = 0;
-    this.islandRadius = 13;
+    this.islandRadius = 14.75;
 
     this.currentStation = null;
     this.nearStation = null;
@@ -269,17 +269,17 @@ export default class Character {
 
     const nearStation = world.stations.checkProximity(this.model.position);
 
-    const controlsHint = document.getElementById('controls-hint');
+    const controlsHint = document.getElementById("controls-hint");
     if (controlsHint) {
-      if (nearStation && nearStation.data.type === 'info') {
-        controlsHint.classList.add('visible');
+      if (nearStation && nearStation.data.type === "info") {
+        controlsHint.classList.add("visible");
       } else {
-        controlsHint.classList.remove('visible');
+        controlsHint.classList.remove("visible");
       }
     }
 
     if (this.experience.languageSwitcher) {
-      if (nearStation && nearStation.data.type === 'info') {
+      if (nearStation && nearStation.data.type === "info") {
         this.experience.languageSwitcher.show();
       } else {
         this.experience.languageSwitcher.hide();
