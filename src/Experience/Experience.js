@@ -108,7 +108,7 @@ export default class Experience {
     this.directionalLight = new THREE.DirectionalLight("#fffaf0", 0.9);
     this.directionalLight.position.set(5, 8, 5);
     this.directionalLight.castShadow = true;
-    this.directionalLight.shadow.mapSize.set(256, 256);
+    this.directionalLight.shadow.mapSize.set(128, 128);
     this.directionalLight.shadow.camera.far = 15;
     this.directionalLight.shadow.camera.left = -8;
     this.directionalLight.shadow.camera.right = 8;

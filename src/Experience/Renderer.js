@@ -23,11 +23,15 @@ export default class Renderer {
     this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2));
     this.instance.shadowMap.enabled = true;
     this.instance.shadowMap.type = THREE.BasicShadowMap;
-    this.instance.shadowMap.autoUpdate = true;
+    this.instance.shadowMap.autoUpdate = false;
 
     this.instance.outputColorSpace = THREE.SRGBColorSpace;
     this.instance.toneMapping = THREE.ACESFilmicToneMapping;
     this.instance.toneMappingExposure = 1.6;
+  }
+
+  updateShadows() {
+    this.instance.shadowMap.needsUpdate = true;
   }
 
   resize() {

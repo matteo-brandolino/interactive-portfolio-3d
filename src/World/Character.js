@@ -26,6 +26,12 @@ export default class Character {
     this.currentAction = null;
     this.walkCycle = 0;
 
+    this.lastShadowUpdatePosition = new THREE.Vector3();
+    this.shadowUpdateDistance = 0.3;
+
+    this.tempPosition = new THREE.Vector3();
+    this.tempVector = new THREE.Vector3();
+
     this.setModel();
   }
 
@@ -192,21 +198,21 @@ export default class Character {
       moveZ /= length;
     }
 
-    const newPosition = this.model.position.clone();
-    newPosition.x += moveX * this.moveSpeed * deltaTime;
-    newPosition.z += moveZ * this.moveSpeed * deltaTime;
+    this.tempPosition.copy(this.model.position);
+    this.tempPosition.x += moveX * this.moveSpeed * deltaTime;
+    this.tempPosition.z += moveZ * this.moveSpeed * deltaTime;
 
     const distanceFromCenter = Math.sqrt(
-      newPosition.x * newPosition.x + newPosition.z * newPosition.z
+      this.tempPosition.x * this.tempPosition.x + this.tempPosition.z * this.tempPosition.z
     );
 
     if (
       distanceFromCenter <= this.islandRadius &&
-      !this.checkObstacleCollision(newPosition)
+      !this.checkObstacleCollision(this.tempPosition)
     ) {
-      this.model.position.copy(newPosition);
+      this.model.position.copy(this.tempPosition);
     } else if (distanceFromCenter > this.islandRadius) {
-      const angle = Math.atan2(newPosition.x, newPosition.z);
+      const angle = Math.atan2(this.tempPosition.x, this.tempPosition.z);
       this.model.position.x = Math.sin(angle) * this.islandRadius;
       this.model.position.z = Math.cos(angle) * this.islandRadius;
     }
@@ -214,6 +220,12 @@ export default class Character {
     if (isMoving) {
       const targetRotation = Math.atan2(moveX, moveZ);
       this.rotation = this.lerpAngle(this.rotation, targetRotation, 0.2);
+
+      const distanceMoved = this.model.position.distanceTo(this.lastShadowUpdatePosition);
+      if (distanceMoved >= this.shadowUpdateDistance) {
+        this.experience.renderer.updateShadows();
+        this.lastShadowUpdatePosition.copy(this.model.position);
+      }
     }
 
     this.updatePosition();
@@ -311,13 +323,16 @@ export default class Character {
     if (!world || !world.island || !world.island.obstacles) return false;
 
     const characterRadius = 0.3;
+    const posX = position.x;
+    const posZ = position.z;
 
     for (const obstacle of world.island.obstacles) {
-      const dx = position.x - obstacle.x;
-      const dz = position.z - obstacle.z;
-      const distance = Math.sqrt(dx * dx + dz * dz);
+      const dx = posX - obstacle.x;
+      const dz = posZ - obstacle.z;
+      const distanceSquared = dx * dx + dz * dz;
+      const minDistanceSquared = (obstacle.radius + characterRadius) ** 2;
 
-      if (distance < obstacle.radius + characterRadius) {
+      if (distanceSquared < minDistanceSquared) {
         return true;
       }
     }

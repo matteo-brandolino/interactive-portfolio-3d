@@ -26,7 +26,7 @@ export default class Island {
       this.islandRadius,
       this.islandRadius - 1,
       1.5,
-      32
+      16
     );
     const baseMaterial = new THREE.MeshStandardMaterial({
       color: "#a67c52",
@@ -42,8 +42,8 @@ export default class Island {
       this.islandRadius,
       this.islandRadius,
       0.2,
-      32,
-      6
+      16,
+      4
     );
 
     this.addHeightVariation(terrainGeometry);
@@ -95,18 +95,19 @@ export default class Island {
     const detailCount = 15;
     const rockGeometry = new THREE.DodecahedronGeometry(0.12, 0);
 
+    const sharedRockMaterial = new THREE.MeshStandardMaterial({
+      color: "#a08878",
+      roughness: 0.95,
+      flatShading: true,
+    });
+
     for (let i = 0; i < detailCount; i++) {
       const angle = Math.random() * Math.PI * 2;
       const radius = 2 + Math.random() * (this.islandRadius - 4);
       const x = Math.cos(angle) * radius;
       const z = Math.sin(angle) * radius;
 
-      const rockMaterial = new THREE.MeshStandardMaterial({
-        color: "#a08878",
-        roughness: 0.95,
-        flatShading: true,
-      });
-      const rock = new THREE.Mesh(rockGeometry, rockMaterial);
+      const rock = new THREE.Mesh(rockGeometry, sharedRockMaterial);
       rock.position.set(x, 0.72, z);
       rock.rotation.set(
         Math.random() * Math.PI,
@@ -128,7 +129,7 @@ export default class Island {
     const beachGeometry = new THREE.RingGeometry(
       this.islandRadius - 0.8,
       this.islandRadius + 0.5,
-      32
+      16
     );
 
     const beachMaterial = new THREE.MeshStandardMaterial({
@@ -305,8 +306,8 @@ export default class Island {
     const waterGeometry = new THREE.PlaneGeometry(100, 100);
 
     this.water = new Water(waterGeometry, {
-      textureWidth: 512,
-      textureHeight: 512,
+      textureWidth: 256,
+      textureHeight: 256,
       waterNormals: new THREE.TextureLoader().load(
         "/textures/waternormals.jpg",
         (texture) => {

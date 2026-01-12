@@ -12,6 +12,9 @@ export default class Camera {
         this.targetDistance = 8
         this.lerpFactor = 0.05
 
+        this.targetPosition = new THREE.Vector3()
+        this.lookAtTarget = new THREE.Vector3()
+
         this.setInstance()
     }
 
@@ -39,20 +42,21 @@ export default class Camera {
         const character = world.character
         const characterPos = character.getPosition()
 
-        const targetPosition = new THREE.Vector3()
-        targetPosition.x = characterPos.x
-        targetPosition.y = this.targetHeight
-        targetPosition.z = characterPos.z + this.targetDistance
+        this.targetPosition.set(
+            characterPos.x,
+            this.targetHeight,
+            characterPos.z + this.targetDistance
+        )
 
-        this.instance.position.x += (targetPosition.x - this.instance.position.x) * this.lerpFactor
-        this.instance.position.y += (targetPosition.y - this.instance.position.y) * this.lerpFactor
-        this.instance.position.z += (targetPosition.z - this.instance.position.z) * this.lerpFactor
+        this.instance.position.x += (this.targetPosition.x - this.instance.position.x) * this.lerpFactor
+        this.instance.position.y += (this.targetPosition.y - this.instance.position.y) * this.lerpFactor
+        this.instance.position.z += (this.targetPosition.z - this.instance.position.z) * this.lerpFactor
 
-        const lookAtTarget = new THREE.Vector3(
+        this.lookAtTarget.set(
             characterPos.x,
             characterPos.y + 0.5,
             characterPos.z
         )
-        this.instance.lookAt(lookAtTarget)
+        this.instance.lookAt(this.lookAtTarget)
     }
 }

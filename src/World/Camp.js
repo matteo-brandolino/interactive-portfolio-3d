@@ -76,7 +76,7 @@ export default class Camp {
 
     this.fireParticles = [];
     for (let i = 0; i < 8; i++) {
-      const particleGeometry = new THREE.SphereGeometry(0.08, 8, 8);
+      const particleGeometry = new THREE.SphereGeometry(0.08, 4, 4);
       const particleMaterial = new THREE.MeshBasicMaterial({
         color: i % 2 === 0 ? '#ff6600' : '#ffaa00',
         transparent: true,
@@ -96,24 +96,30 @@ export default class Camp {
     this.group.add(fireGroup);
     this.fireGroup = fireGroup;
     this.time = this.experience.time;
+    this.fireUpdateCounter = 0;
   }
 
   update() {
     if (this.fireParticles && this.fireLight) {
+      this.fireUpdateCounter++;
+
+      if (this.fireUpdateCounter % 2 === 0) {
+        const elapsed = this.time.elapsed * 0.001;
+
+        this.fireParticles.forEach((particle, i) => {
+          const offset = particle.userData.offset;
+          const speed = particle.userData.speed;
+          const t = elapsed * speed + offset;
+
+          particle.position.x = Math.cos(t * 3) * 0.15;
+          particle.position.z = Math.sin(t * 3) * 0.15;
+          particle.position.y = Math.sin(t * 5) * 0.3 + 0.3;
+
+          particle.material.opacity = 0.5 + Math.sin(t * 8) * 0.3;
+        });
+      }
+
       const elapsed = this.time.elapsed * 0.001;
-
-      this.fireParticles.forEach((particle, i) => {
-        const offset = particle.userData.offset;
-        const speed = particle.userData.speed;
-        const t = elapsed * speed + offset;
-
-        particle.position.x = Math.cos(t * 3) * 0.15;
-        particle.position.z = Math.sin(t * 3) * 0.15;
-        particle.position.y = Math.sin(t * 5) * 0.3 + 0.3;
-
-        particle.material.opacity = 0.5 + Math.sin(t * 8) * 0.3;
-      });
-
       const flicker = Math.sin(elapsed * 6) * 0.3;
       this.fireLight.intensity = 1.5 + flicker;
     }
