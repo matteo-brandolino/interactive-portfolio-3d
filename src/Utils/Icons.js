@@ -31,6 +31,7 @@ import {
   Users,
   FileText,
   Headphones,
+  Gamepad2,
 } from "lucide";
 
 export const icons = {
@@ -65,6 +66,7 @@ export const icons = {
   // Other
   globe: Globe,
   code: Code,
+  gamepad: Gamepad2,
 
   // Interests
   messageSquare: MessageSquare,

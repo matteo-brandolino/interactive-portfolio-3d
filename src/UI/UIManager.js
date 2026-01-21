@@ -73,12 +73,23 @@ export default class UIManager {
       )
       .join("");
 
+    const emojiToIcon = {
+      "💼": createIcon("work", { size: "20", color: "#4a3728" }),
+      "⚡": createIcon("skills", { size: "20", color: "#4a3728" }),
+      "🚀": createIcon("projects", { size: "20", color: "#4a3728" }),
+      "👋": createIcon("about", { size: "20", color: "#4a3728" }),
+    };
+
     const stationsList = data.stations
-      .map(
-        (station) => `
-            <li style="margin-bottom: 0.5rem; color: #4a3728;">${station}</li>
-        `
-      )
+      .map((station) => {
+        let stationText = station;
+        Object.keys(emojiToIcon).forEach((emoji) => {
+          stationText = stationText.replace(emoji, emojiToIcon[emoji]);
+        });
+        return `
+            <li style="margin-bottom: 0.5rem; color: #4a3728;">${stationText}</li>
+        `;
+      })
       .join("");
 
     const headerIcon = createIcon(t("info.icon"), {
@@ -100,14 +111,14 @@ export default class UIManager {
                 </p>
 
                 <h3 style="font-size: 1.25rem; font-weight: 600; color: #3e2723; margin-bottom: 1rem; font-family: Georgia, serif;">
-                    🎮 ${data.controlsTitle}
+                    ${createIcon("gamepad", { size: "24", color: "#3e2723" })} ${data.controlsTitle}
                 </h3>
                 <div style="background: rgba(139, 90, 43, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 2px solid #8b5a2b;">
                     ${desktopControls}
                 </div>
 
                 <h3 style="font-size: 1.25rem; font-weight: 600; color: #3e2723; margin-bottom: 1rem; font-family: Georgia, serif;">
-                    📍 ${data.stationsTitle}
+                    ${createIcon("mapPin", { size: "24", color: "#3e2723" })} ${data.stationsTitle}
                 </h3>
                 <ul style="padding-left: 1.5rem; margin-bottom: 1rem;">
                     ${stationsList}
@@ -115,7 +126,7 @@ export default class UIManager {
 
                 <div style="background: rgba(212, 165, 116, 0.3); padding: 1rem; border-radius: 8px; border: 2px solid #8b5a2b; margin-top: 1.5rem;">
                     <p style="color: #3e2723; font-style: italic; margin: 0;">
-                        💡 ${
+                        ${createIcon("lightbulb", { size: "20", color: "#3e2723" })} ${
                           data.tip
                         } <kbd style="background: #8b5a2b; color: #f5e6d3; padding: 0.15rem 0.5rem; border-radius: 4px; font-family: monospace;">${
       data.tipKey
@@ -336,7 +347,7 @@ export default class UIManager {
                                   project.github
                                     ? `
                                     <a href="${project.github}" target="_blank" style="color: #2d5f3f; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
-                                        💻 GitHub →
+                                        ${createIcon("code", { size: "16", color: "#2d5f3f" })} GitHub →
                                     </a>
                                 `
                                     : ""
@@ -345,7 +356,7 @@ export default class UIManager {
                                   project.demo
                                     ? `
                                     <a href="${project.demo}" target="_blank" style="color: #1b5e20; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
-                                        🚀 Demo →
+                                        ${createIcon("projects", { size: "16", color: "#1b5e20" })} Demo →
                                     </a>
                                 `
                                     : ""
@@ -354,7 +365,7 @@ export default class UIManager {
                                   project.docs
                                     ? `
                                     <a href="${project.docs}" target="_blank" style="color: #8b5a2b; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
-                                        📚 Docs →
+                                        ${createIcon("bookOpen", { size: "16", color: "#8b5a2b" })} Docs →
                                     </a>
                                 `
                                     : ""
@@ -408,7 +419,7 @@ export default class UIManager {
                           contrib.github
                             ? `
                             <a href="${contrib.github}" target="_blank" style="color: #2d5f3f; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
-                                💻 View on GitHub →
+                                ${createIcon("code", { size: "16", color: "#2d5f3f" })} View on GitHub →
                             </a>
                         `
                             : ""

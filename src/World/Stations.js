@@ -93,19 +93,22 @@ export default class Stations {
     checkProximity(characterPosition) {
         let foundNearStation = null
 
-        this.stations.forEach(station => {
+        for (const station of this.stations) {
             const isNear = station.isNear(characterPosition)
 
             if (isNear) {
                 foundNearStation = station
+                break
             }
-        })
+        }
 
-        if (foundNearStation !== this.activeStation) {
+        if (!foundNearStation && this.activeStation) {
+            this.activeStation.setActive(false)
+            this.activeStation = null
+        } else if (foundNearStation !== this.activeStation) {
             if (this.activeStation) {
                 this.activeStation.setActive(false)
             }
-
             this.activeStation = foundNearStation
             if (this.activeStation) {
                 this.activeStation.setActive(true)

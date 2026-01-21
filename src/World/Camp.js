@@ -52,7 +52,7 @@ export default class Camp {
 
       this.bonfire.traverse((child) => {
         if (child instanceof THREE.Mesh) {
-          child.castShadow = true;
+          child.castShadow = false;
           child.receiveShadow = true;
         }
       });
@@ -75,7 +75,7 @@ export default class Camp {
     fireGroup.position.y += 0.8;
 
     this.fireParticles = [];
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 4; i++) {
       const particleGeometry = new THREE.SphereGeometry(0.08, 4, 4);
       const particleMaterial = new THREE.MeshBasicMaterial({
         color: i % 2 === 0 ? '#ff6600' : '#ffaa00',
@@ -97,31 +97,49 @@ export default class Camp {
     this.fireGroup = fireGroup;
     this.time = this.experience.time;
     this.fireUpdateCounter = 0;
+
+    this.fireCullDistance = 8;
+    this.fireCullDistanceSquared = this.fireCullDistance * this.fireCullDistance;
   }
 
   update() {
     if (this.fireParticles && this.fireLight) {
-      this.fireUpdateCounter++;
+      const world = this.experience.world;
+      if (!world || !world.character) return;
 
-      if (this.fireUpdateCounter % 2 === 0) {
-        const elapsed = this.time.elapsed * 0.001;
+      const characterPos = world.character.getPosition();
+      const bonfirePos = this.bonfire.position;
 
-        this.fireParticles.forEach((particle, i) => {
-          const offset = particle.userData.offset;
-          const speed = particle.userData.speed;
-          const t = elapsed * speed + offset;
+      const dx = characterPos.x - bonfirePos.x;
+      const dz = characterPos.z - bonfirePos.z;
+      const distanceSquared = dx * dx + dz * dz;
 
-          particle.position.x = Math.cos(t * 3) * 0.15;
-          particle.position.z = Math.sin(t * 3) * 0.15;
-          particle.position.y = Math.sin(t * 5) * 0.3 + 0.3;
+      const isNearFire = distanceSquared <= this.fireCullDistanceSquared;
 
-          particle.material.opacity = 0.5 + Math.sin(t * 8) * 0.3;
-        });
+      this.fireGroup.visible = isNearFire;
+
+      if (isNearFire) {
+        this.fireUpdateCounter++;
+
+        if (this.fireUpdateCounter % 3 === 0) {
+          const elapsed = this.time.elapsed * 0.001;
+
+          this.fireParticles.forEach((particle, i) => {
+            const offset = particle.userData.offset;
+            const speed = particle.userData.speed;
+            const t = elapsed * speed + offset;
+
+            particle.position.x = Math.cos(t * 3) * 0.15;
+            particle.position.z = Math.sin(t * 3) * 0.15;
+            particle.position.y = Math.sin(t * 5) * 0.3 + 0.3;
+
+            particle.material.opacity = 0.5 + Math.sin(t * 8) * 0.3;
+          });
+
+          const flicker = Math.sin(elapsed * 6) * 0.3;
+          this.fireLight.intensity = 1.5 + flicker;
+        }
       }
-
-      const elapsed = this.time.elapsed * 0.001;
-      const flicker = Math.sin(elapsed * 6) * 0.3;
-      this.fireLight.intensity = 1.5 + flicker;
     }
   }
 }

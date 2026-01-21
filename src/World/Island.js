@@ -16,6 +16,7 @@ export default class Island {
     this.createBeach();
     this.createTrees();
     this.createRocks();
+    this.createBoat();
     this.createWater();
 
     this.scene.add(this.group);
@@ -101,28 +102,41 @@ export default class Island {
       flatShading: true,
     });
 
+    const instancedRocks = new THREE.InstancedMesh(
+      rockGeometry,
+      sharedRockMaterial,
+      detailCount
+    );
+
+    const matrix = new THREE.Matrix4();
+    const position = new THREE.Vector3();
+    const rotation = new THREE.Euler();
+    const quaternion = new THREE.Quaternion();
+    const scale = new THREE.Vector3();
+
     for (let i = 0; i < detailCount; i++) {
       const angle = Math.random() * Math.PI * 2;
       const radius = 2 + Math.random() * (this.islandRadius - 4);
       const x = Math.cos(angle) * radius;
       const z = Math.sin(angle) * radius;
 
-      const rock = new THREE.Mesh(rockGeometry, sharedRockMaterial);
-      rock.position.set(x, 0.72, z);
-      rock.rotation.set(
+      position.set(x, 0.72, z);
+      rotation.set(
         Math.random() * Math.PI,
         Math.random() * Math.PI,
         Math.random() * Math.PI
       );
-      rock.scale.set(
-        0.7 + Math.random() * 0.6,
-        0.7 + Math.random() * 0.6,
-        0.7 + Math.random() * 0.6
-      );
-      rock.receiveShadow = true;
-      rock.castShadow = true;
-      this.group.add(rock);
+      quaternion.setFromEuler(rotation);
+      const scaleValue = 0.7 + Math.random() * 0.6;
+      scale.set(scaleValue, scaleValue, scaleValue);
+
+      matrix.compose(position, quaternion, scale);
+      instancedRocks.setMatrixAt(i, matrix);
     }
+
+    instancedRocks.castShadow = true;
+    instancedRocks.receiveShadow = true;
+    this.group.add(instancedRocks);
   }
 
   createBeach() {
@@ -302,6 +316,34 @@ export default class Island {
     });
   }
 
+  createBoat() {
+    const boatModel = this.experience.resources.items.boat;
+
+    if (boatModel) {
+      const boat = boatModel.scene.clone();
+      boat.position.set(0, 0.7, 13.5);
+      boat.scale.set(0.05, 0.05, 0.05);
+      boat.rotation.y = Math.PI + 0.3;
+
+      boat.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+        child.matrixAutoUpdate = false;
+        child.updateMatrix();
+      });
+
+      this.group.add(boat);
+
+      this.obstacles.push({
+        x: 0,
+        z: 13.5,
+        radius: 1.2,
+      });
+    }
+  }
+
   createWater() {
     const waterGeometry = new THREE.PlaneGeometry(100, 100);
 
@@ -331,7 +373,7 @@ export default class Island {
 
   update() {
     if (this.water && this.water.material && this.water.material.uniforms) {
-      this.water.material.uniforms["time"].value += this.time.delta * 0.00001;
+      this.water.material.uniforms["time"].value += this.time.delta * 0.00008;
     }
   }
 }

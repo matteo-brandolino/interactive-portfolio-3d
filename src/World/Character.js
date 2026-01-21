@@ -27,10 +27,19 @@ export default class Character {
     this.walkCycle = 0;
 
     this.lastShadowUpdatePosition = new THREE.Vector3();
-    this.shadowUpdateDistance = 0.3;
+    this.shadowUpdateDistance = 0.5;
 
     this.tempPosition = new THREE.Vector3();
     this.tempVector = new THREE.Vector3();
+
+    this.domCache = {
+      controlsHint: null,
+      initialized: false
+    };
+
+    this.proximityCheckCounter = 0;
+    this.proximityCheckInterval = 3;
+    this.lastNearStationType = null;
 
     this.setModel();
   }
@@ -193,25 +202,25 @@ export default class Character {
     const isMoving = moveX !== 0 || moveZ !== 0;
 
     if (moveX !== 0 && moveZ !== 0) {
-      const length = Math.sqrt(moveX * moveX + moveZ * moveZ);
-      moveX /= length;
-      moveZ /= length;
+      const DIAGONAL_FACTOR = 0.7071067811865476; // 1/sqrt(2) pre-calculated
+      moveX *= DIAGONAL_FACTOR;
+      moveZ *= DIAGONAL_FACTOR;
     }
 
     this.tempPosition.copy(this.model.position);
     this.tempPosition.x += moveX * this.moveSpeed * deltaTime;
     this.tempPosition.z += moveZ * this.moveSpeed * deltaTime;
 
-    const distanceFromCenter = Math.sqrt(
-      this.tempPosition.x * this.tempPosition.x + this.tempPosition.z * this.tempPosition.z
-    );
+    const distanceSquaredFromCenter =
+      this.tempPosition.x * this.tempPosition.x + this.tempPosition.z * this.tempPosition.z;
+    const radiusSquared = this.islandRadius * this.islandRadius;
 
     if (
-      distanceFromCenter <= this.islandRadius &&
+      distanceSquaredFromCenter <= radiusSquared &&
       !this.checkObstacleCollision(this.tempPosition)
     ) {
       this.model.position.copy(this.tempPosition);
-    } else if (distanceFromCenter > this.islandRadius) {
+    } else if (distanceSquaredFromCenter > radiusSquared) {
       const angle = Math.atan2(this.tempPosition.x, this.tempPosition.z);
       this.model.position.x = Math.sin(angle) * this.islandRadius;
       this.model.position.z = Math.cos(angle) * this.islandRadius;
@@ -221,8 +230,9 @@ export default class Character {
       const targetRotation = Math.atan2(moveX, moveZ);
       this.rotation = this.lerpAngle(this.rotation, targetRotation, 0.2);
 
-      const distanceMoved = this.model.position.distanceTo(this.lastShadowUpdatePosition);
-      if (distanceMoved >= this.shadowUpdateDistance) {
+      const distanceMovedSquared = this.model.position.distanceToSquared(this.lastShadowUpdatePosition);
+      const shadowUpdateDistanceSquared = this.shadowUpdateDistance * this.shadowUpdateDistance;
+      if (distanceMovedSquared >= shadowUpdateDistanceSquared) {
         this.experience.renderer.updateShadows();
         this.lastShadowUpdatePosition.copy(this.model.position);
       }
@@ -230,7 +240,12 @@ export default class Character {
 
     this.updatePosition();
     this.updateAnimation(deltaTime, isMoving);
-    this.checkStationProximity();
+
+    this.proximityCheckCounter++;
+    if (this.proximityCheckCounter >= this.proximityCheckInterval) {
+      this.checkStationProximity();
+      this.proximityCheckCounter = 0;
+    }
   }
 
   lerpAngle(a, b, t) {
@@ -281,21 +296,32 @@ export default class Character {
 
     const nearStation = world.stations.checkProximity(this.model.position);
 
-    const controlsHint = document.getElementById("controls-hint");
-    if (controlsHint) {
-      if (nearStation && nearStation.data.type === "info") {
-        controlsHint.classList.add("visible");
-      } else {
-        controlsHint.classList.remove("visible");
-      }
+    if (!this.domCache.initialized) {
+      this.domCache.controlsHint = document.getElementById("controls-hint");
+      this.domCache.initialized = true;
     }
 
-    if (this.experience.languageSwitcher) {
-      if (nearStation && nearStation.data.type === "info") {
-        this.experience.languageSwitcher.show();
-      } else {
-        this.experience.languageSwitcher.hide();
+    const controlsHint = this.domCache.controlsHint;
+    const currentStationType = nearStation ? nearStation.data.type : null;
+
+    if (currentStationType !== this.lastNearStationType) {
+      if (controlsHint) {
+        if (currentStationType === "info") {
+          controlsHint.classList.add("visible");
+        } else {
+          controlsHint.classList.remove("visible");
+        }
       }
+
+      if (this.experience.languageSwitcher) {
+        if (currentStationType === "info") {
+          this.experience.languageSwitcher.show();
+        } else {
+          this.experience.languageSwitcher.hide();
+        }
+      }
+
+      this.lastNearStationType = currentStationType;
     }
 
     if (nearStation && this.controls.keys.interact) {
@@ -326,10 +352,16 @@ export default class Character {
     const posX = position.x;
     const posZ = position.z;
 
+    const maxCheckRadius = 5;
+    const maxCheckRadiusSquared = maxCheckRadius * maxCheckRadius;
+
     for (const obstacle of world.island.obstacles) {
       const dx = posX - obstacle.x;
       const dz = posZ - obstacle.z;
       const distanceSquared = dx * dx + dz * dz;
+
+      if (distanceSquared > maxCheckRadiusSquared) continue;
+
       const minDistanceSquared = (obstacle.radius + characterRadius) ** 2;
 
       if (distanceSquared < minDistanceSquared) {

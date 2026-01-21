@@ -35,7 +35,7 @@ export default class Station {
 
     if (woodenSignModel) {
       this.marker = woodenSignModel.scene.clone();
-      this.marker.scale.set(0.8, 0.8, 0.8);
+      this.marker.scale.set(0.6, 0.6, 0.6);
       this.marker.position.y = 0;
 
       this.marker.traverse((child) => {
@@ -161,8 +161,10 @@ export default class Station {
 
     context.fillStyle = "rgba(139, 90, 43, 0.15)";
     for (let i = 0; i < 8; i++) {
-      const y = Math.random() * canvas.height;
-      const height = 3 + Math.random() * 4;
+      const seed1 = (i * 0.618033988749895) % 1;
+      const seed2 = ((i + 0.5) * 0.618033988749895) % 1;
+      const y = seed1 * canvas.height;
+      const height = 3 + seed2 * 4;
       this.roundRect(context, 0, y, canvas.width, height, 2);
       context.fill();
     }

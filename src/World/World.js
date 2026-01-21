@@ -19,6 +19,9 @@ export default class World {
 
     this.character = new Character();
     this.stations = new Stations();
+
+    // Force initial shadow map update to prevent visual artifacts
+    this.experience.renderer.updateShadows();
   }
 
   update() {

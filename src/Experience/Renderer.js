@@ -22,7 +22,7 @@ export default class Renderer {
     this.instance.setSize(this.sizes.width, this.sizes.height);
     this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2));
     this.instance.shadowMap.enabled = true;
-    this.instance.shadowMap.type = THREE.BasicShadowMap;
+    this.instance.shadowMap.type = THREE.PCFShadowMap;
     this.instance.shadowMap.autoUpdate = false;
 
     this.instance.outputColorSpace = THREE.SRGBColorSpace;
