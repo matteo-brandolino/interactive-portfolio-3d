@@ -3,11 +3,76 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio 3D - Matteo</title>
+    <title>Portfolio 3D - Matteo | Developer & Creative Coder</title>
     <meta
       name="description"
-      content="Portfolio interattivo 3D di Matteo - Developer & Creative Coder"
+      content="Esplora il mio portfolio interattivo 3D. Sviluppatore specializzato in WebGL, Three.js e creative coding. Naviga nell'isola 3D per scoprire progetti, competenze ed esperienze."
     />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph (Facebook, LinkedIn, Discord) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-domain.vercel.app/">
+    <meta property="og:title" content="Portfolio 3D - Matteo | Developer & Creative Coder">
+    <meta property="og:description" content="Esplora il mio portfolio interattivo 3D. Sviluppatore specializzato in WebGL, Three.js e creative coding.">
+    <meta property="og:image" content="https://your-domain.vercel.app/android-chrome-512x512.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:locale" content="it_IT">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Portfolio 3D - Matteo">
+    <meta name="twitter:description" content="Portfolio interattivo 3D con Three.js - Developer & Creative Coder">
+    <meta name="twitter:image" content="https://your-domain.vercel.app/android-chrome-512x512.png">
+
+    <!-- SEO Basics -->
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Matteo">
+    <meta name="keywords" content="portfolio, 3d, webgl, three.js, developer, creative coding, interactive, matteo">
+    <link rel="canonical" href="https://your-domain.vercel.app/">
+
+    <!-- Alternate Languages -->
+    <link rel="alternate" hreflang="it" href="https://your-domain.vercel.app/">
+    <link rel="alternate" hreflang="en" href="https://your-domain.vercel.app/">
+    <link rel="alternate" hreflang="x-default" href="https://your-domain.vercel.app/">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Matteo",
+      "jobTitle": "Developer & Creative Coder",
+      "url": "https://your-domain.vercel.app",
+      "knowsAbout": ["Three.js", "WebGL", "JavaScript", "GSAP", "Creative Coding", "Frontend Development"],
+      "description": "Developer specializzato in WebGL e creative coding con Three.js"
+    }
+    </script>
+
+    <!-- Preload Critical Assets -->
+    <link rel="preload" href="/models/character.glb" as="fetch" crossorigin>
+    <link rel="preload" href="/textures/waternormals.webp" as="image">
+
+    <!-- DNS Prefetch for External Resources -->
+    <link rel="dns-prefetch" href="https://www.gstatic.com">
+
+    <!-- Analytics (Optional) -->
+    <!-- Uncomment one of the following options after deployment: -->
+
+    <!-- Option 1: Plausible Analytics (Privacy-friendly, GDPR compliant) -->
+    <!-- <script defer data-domain="your-domain.vercel.app" src="https://plausible.io/js/script.js"></script> -->
+
+    <!-- Option 2: Umami Analytics (Self-hosted, free on Vercel) -->
+    <!-- <script defer src="https://your-umami.vercel.app/script.js" data-website-id="your-id"></script> -->
+
     <style>
       * {
         margin: 0;
@@ -245,21 +310,21 @@
   </head>
   <body>
     <!-- Canvas for Three.js -->
-    <canvas id="canvas"></canvas>
+    <canvas id="canvas" role="img" aria-label="Portfolio 3D interattivo - Usa WASD per muoverti e Spazio per interagire con le stazioni"></canvas>
 
     <!-- Loading Screen -->
-    <div id="loading-screen">
-      <div class="loading-text">Caricamento portfolio...</div>
-      <div class="progress-bar">
+    <div id="loading-screen" role="status" aria-live="polite">
+      <div class="loading-text" id="loading-text">Caricamento portfolio...</div>
+      <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
         <div class="progress-bar-fill" id="progress-bar-fill"></div>
       </div>
     </div>
 
     <!-- UI Panels Container -->
-    <div id="panels-container"></div>
+    <div id="panels-container" role="region" aria-label="Contenuti portfolio"></div>
 
     <!-- Controls Hint -->
-    <div id="controls-hint">
+    <div id="controls-hint" role="status" aria-live="polite">
       <!-- Will be populated by JavaScript based on device -->
     </div>
 

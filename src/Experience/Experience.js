@@ -73,8 +73,20 @@ export default class Experience {
 
     this.resources.on("loaded", (progress) => {
       const progressBar = document.getElementById("progress-bar-fill");
+      const progressBarContainer = progressBar?.parentElement
+      const loadingText = document.getElementById("loading-text")
+
       if (progressBar) {
         progressBar.style.width = `${progress}%`;
+      }
+
+      // Update ARIA attributes for accessibility
+      if (progressBarContainer) {
+        progressBarContainer.setAttribute('aria-valuenow', Math.round(progress))
+      }
+
+      if (loadingText) {
+        loadingText.textContent = `Caricamento portfolio... ${Math.round(progress)}%`
       }
     });
 

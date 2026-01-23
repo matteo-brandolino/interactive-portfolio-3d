@@ -1,0 +1,9 @@
+# robots.txt for Portfolio 3D
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://your-domain.vercel.app/sitemap.xml
+
+# Crawl-delay (optional, helps reduce server load)
+Crawl-delay: 1

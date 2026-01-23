@@ -587,8 +587,21 @@ export default class UIManager {
 
   setupEventListeners() {
     document.querySelectorAll(".close-btn").forEach((btn) => {
+      // Add ARIA label
+      btn.setAttribute('aria-label', 'Chiudi pannello')
+      btn.setAttribute('tabindex', '0')
+
+      // Click handler
       btn.addEventListener("click", () => {
         this.hideCurrentPanel();
+      });
+
+      // Keyboard navigation
+      btn.addEventListener("keydown", (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          this.hideCurrentPanel()
+        }
       });
     });
 
@@ -613,6 +626,9 @@ export default class UIManager {
 
     panel.classList.add("active");
 
+    // Respect reduced motion preference
+    const duration = window.reducedMotion ? 0 : 0.5
+
     gsap.fromTo(
       panel,
       {
@@ -622,8 +638,15 @@ export default class UIManager {
       {
         x: 0,
         opacity: 1,
-        duration: 0.5,
+        duration: duration,
         ease: "power3.out",
+        onComplete: () => {
+          // Focus management - focus on close button when panel opens
+          const closeBtn = panel.querySelector('.close-btn')
+          if (closeBtn) {
+            setTimeout(() => closeBtn.focus(), 100)
+          }
+        }
       }
     );
   }
@@ -638,10 +661,13 @@ export default class UIManager {
 
       gsap.killTweensOf(panel);
 
+      // Respect reduced motion preference
+      const duration = window.reducedMotion ? 0 : 0.4
+
       gsap.to(panel, {
         x: "100%",
         opacity: 0,
-        duration: 0.4,
+        duration: duration,
         ease: "power3.in",
         onComplete: () => {
           panel.classList.remove("active");

@@ -347,11 +347,18 @@ export default class Island {
   createWater() {
     const waterGeometry = new THREE.PlaneGeometry(100, 100);
 
+    // Use WebP with JPG fallback for water normals
+    const isWebPSupported = document.createElement('canvas')
+      .toDataURL('image/webp').indexOf('data:image/webp') === 0
+    const waterNormalsPath = isWebPSupported
+      ? '/textures/waternormals.webp'
+      : '/textures/waternormals_compressed.jpg'
+
     this.water = new Water(waterGeometry, {
       textureWidth: 256,
       textureHeight: 256,
       waterNormals: new THREE.TextureLoader().load(
-        "/textures/waternormals.jpg",
+        waterNormalsPath,
         (texture) => {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
           texture.repeat.set(4, 4);
