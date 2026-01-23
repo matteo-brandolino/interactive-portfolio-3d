@@ -27,7 +27,7 @@ export default class Renderer {
 
     this.instance.outputColorSpace = THREE.SRGBColorSpace;
     this.instance.toneMapping = THREE.ACESFilmicToneMapping;
-    this.instance.toneMappingExposure = 1.6;
+    this.instance.toneMappingExposure = 1.0;
 
     // WebGL Context Loss Handling
     this.canvas.addEventListener('webglcontextlost', (event) => {
