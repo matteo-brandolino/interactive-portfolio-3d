@@ -69,6 +69,45 @@ export default class VirtualJoystick {
         this.container.appendChild(this.base)
         this.container.appendChild(this.stick)
         document.body.appendChild(this.container)
+
+        // Create interaction button
+        this.interactButton = document.createElement('button')
+        this.interactButton.id = 'interact-button'
+        this.interactButton.innerHTML = '⚡'
+        this.interactButton.setAttribute('aria-label', 'Interagisci con la stazione')
+        this.interactButton.style.cssText = `
+            position: fixed;
+            bottom: 80px;
+            right: 80px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.9);
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            color: white;
+            font-size: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        `
+        document.body.appendChild(this.interactButton)
+
+        // Handle interaction button
+        this.interactButton.addEventListener('touchstart', (e) => {
+            e.preventDefault()
+            this.triggerInteraction()
+        })
+    }
+
+    triggerInteraction() {
+        // Dispatch a custom event that Character will listen to
+        window.dispatchEvent(new CustomEvent('mobileInteract'))
     }
 
     setupEvents() {

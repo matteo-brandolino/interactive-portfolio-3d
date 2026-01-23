@@ -21,6 +21,11 @@ export default class Character {
     this.controls = new Controls();
     this.joystick = new VirtualJoystick();
 
+    // Listen for mobile interaction event
+    window.addEventListener('mobileInteract', () => {
+      this.controls.keys.interact = true
+    })
+
     this.mixer = null;
     this.animations = {};
     this.currentAction = null;
