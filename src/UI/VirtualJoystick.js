@@ -1,38 +1,40 @@
-import { Hand } from 'lucide';
-
 export default class VirtualJoystick {
-    constructor() {
-        this.active = false
-        this.baseX = 0
-        this.baseY = 0
-        this.stickX = 0
-        this.stickY = 0
-        this.touchId = null
+  constructor() {
+    this.active = false;
+    this.baseX = 0;
+    this.baseY = 0;
+    this.stickX = 0;
+    this.stickY = 0;
+    this.touchId = null;
 
-        this.deltaX = 0
-        this.deltaY = 0
-        this.maxDistance = 50
-        this.boundHandlers = null
+    this.deltaX = 0;
+    this.deltaY = 0;
+    this.maxDistance = 50;
+    this.boundHandlers = null;
 
-        if (this.isTouchDevice()) {
-            this.createJoystick()
-            this.setupEvents()
-        }
+    if (this.isTouchDevice()) {
+      this.createJoystick();
+      this.setupEvents();
     }
+  }
 
-    isTouchDevice() {
-        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
-        const isIPad = navigator.userAgent.includes('iPad') ||
-                       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
-        const isMobileUA = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  isTouchDevice() {
+    const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const isIPad =
+      navigator.userAgent.includes("iPad") ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const isMobileUA =
+      /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent,
+      );
 
-        return hasTouch || isIPad || isMobileUA
-    }
+    return hasTouch || isIPad || isMobileUA;
+  }
 
-    createJoystick() {
-        this.container = document.createElement('div')
-        this.container.id = 'virtual-joystick'
-        this.container.style.cssText = `
+  createJoystick() {
+    this.container = document.createElement("div");
+    this.container.id = "virtual-joystick";
+    this.container.style.cssText = `
             position: fixed;
             bottom: 80px;
             left: 80px;
@@ -42,10 +44,10 @@ export default class VirtualJoystick {
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.2s;
-        `
+        `;
 
-        this.base = document.createElement('div')
-        this.base.style.cssText = `
+    this.base = document.createElement("div");
+    this.base.style.cssText = `
             position: absolute;
             width: 100%;
             height: 100%;
@@ -53,10 +55,10 @@ export default class VirtualJoystick {
             background: rgba(255, 255, 255, 0.2);
             border: 3px solid rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(10px);
-        `
+        `;
 
-        this.stick = document.createElement('div')
-        this.stick.style.cssText = `
+    this.stick = document.createElement("div");
+    this.stick.style.cssText = `
             position: absolute;
             width: 50px;
             height: 50px;
@@ -67,15 +69,15 @@ export default class VirtualJoystick {
             top: 50%;
             transform: translate(-50%, -50%);
             transition: all 0.1s;
-        `
+        `;
 
-        this.container.appendChild(this.base)
-        this.container.appendChild(this.stick)
-        document.body.appendChild(this.container)
+    this.container.appendChild(this.base);
+    this.container.appendChild(this.stick);
+    document.body.appendChild(this.container);
 
-        // Create joystick zone indicator
-        this.zoneIndicator = document.createElement('div')
-        this.zoneIndicator.style.cssText = `
+    // Create joystick zone indicator
+    this.zoneIndicator = document.createElement("div");
+    this.zoneIndicator.style.cssText = `
             position: fixed;
             left: 0;
             top: 0;
@@ -87,15 +89,15 @@ export default class VirtualJoystick {
             z-index: 50;
             opacity: 1;
             transition: opacity 0.3s;
-        `
-        document.body.appendChild(this.zoneIndicator)
+        `;
+    document.body.appendChild(this.zoneIndicator);
 
-        // Add touch hint text (fades after first use)
-        const hasSeenHint = localStorage.getItem('joystick-hint-seen')
-        if (!hasSeenHint) {
-            this.touchHint = document.createElement('div')
-            this.touchHint.textContent = 'Tocca qui per muoverti'
-            this.touchHint.style.cssText = `
+    // Add touch hint text (fades after first use)
+    const hasSeenHint = localStorage.getItem("joystick-hint-seen");
+    if (!hasSeenHint) {
+      this.touchHint = document.createElement("div");
+      this.touchHint.textContent = "Tocca qui per muoverti";
+      this.touchHint.style.cssText = `
                 position: fixed;
                 left: 20%;
                 bottom: 140px;
@@ -112,31 +114,46 @@ export default class VirtualJoystick {
                 opacity: 1;
                 transition: opacity 0.5s;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            `
-            document.body.appendChild(this.touchHint)
+            `;
+      document.body.appendChild(this.touchHint);
 
-            // Fade out hint after first touch
-            const hideHint = () => {
-                if (this.touchHint) {
-                    this.touchHint.style.opacity = '0'
-                    setTimeout(() => {
-                        this.touchHint?.remove()
-                        this.touchHint = null
-                    }, 500)
-                    localStorage.setItem('joystick-hint-seen', 'true')
-                    window.removeEventListener('touchstart', hideHint)
-                }
-            }
-            window.addEventListener('touchstart', hideHint)
+      // Fade out hint after first touch
+      const hideHint = () => {
+        if (this.touchHint) {
+          this.touchHint.style.opacity = "0";
+          setTimeout(() => {
+            this.touchHint?.remove();
+            this.touchHint = null;
+          }, 500);
+          localStorage.setItem("joystick-hint-seen", "true");
+          window.removeEventListener("touchstart", hideHint);
         }
+      };
+      window.addEventListener("touchstart", hideHint);
+    }
 
-        // Create interaction button
-        this.interactButton = document.createElement('button')
-        this.interactButton.id = 'interact-button'
-        const icon = Hand.toSvg({ size: 32, color: '#3d2817', strokeWidth: 2.5 })
-        this.interactButton.innerHTML = icon
-        this.interactButton.setAttribute('aria-label', 'Interagisci con la stazione')
-        this.interactButton.style.cssText = `
+    this.interactButton = document.createElement("button");
+    this.interactButton.id = "interact-button";
+
+    this.interactButton.innerHTML = `
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="36" height="36"
+     viewBox="0 0 24 24"
+     fill="none"
+     stroke="#3d2817"
+     stroke-width="2.5"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+  <path d="M18 11V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8"/>
+  <path d="M14 10l5 5"/>
+  <path d="M19 10v5h-5"/>
+</svg>
+`;
+    this.interactButton.setAttribute(
+      "aria-label",
+      "Interagisci con la stazione",
+    );
+    this.interactButton.style.cssText = `
             position: fixed;
             bottom: 80px;
             right: 80px;
@@ -159,169 +176,177 @@ export default class VirtualJoystick {
             transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s;
             opacity: 0;
             pointer-events: none;
-        `
-        document.body.appendChild(this.interactButton)
+        `;
+    document.body.appendChild(this.interactButton);
 
-        // Handle interaction button with active state feedback
-        this.interactButton.addEventListener('touchstart', (e) => {
-            e.preventDefault()
-            this.interactButton.style.transform = 'scale(0.95)'
-            this.triggerInteraction()
-        })
+    // Handle interaction button with active state feedback
+    this.interactButton.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      this.interactButton.style.transform = "scale(0.95)";
+      this.triggerInteraction();
+    });
 
-        this.interactButton.addEventListener('touchend', (e) => {
-            e.preventDefault()
-            this.interactButton.style.transform = 'scale(1)'
-        })
+    this.interactButton.addEventListener("touchend", (e) => {
+      e.preventDefault();
+      this.interactButton.style.transform = "scale(1)";
+    });
+  }
+
+  triggerInteraction() {
+    // Dispatch a custom event that Character will listen to
+    window.dispatchEvent(new CustomEvent("mobileInteract"));
+  }
+
+  show() {
+    if (this.interactButton) {
+      this.interactButton.style.opacity = "1";
+      this.interactButton.style.pointerEvents = "auto";
     }
+  }
 
-    triggerInteraction() {
-        // Dispatch a custom event that Character will listen to
-        window.dispatchEvent(new CustomEvent('mobileInteract'))
+  hide() {
+    if (this.interactButton) {
+      this.interactButton.style.opacity = "0";
+      this.interactButton.style.pointerEvents = "none";
     }
+  }
 
-    show() {
-        if (this.interactButton) {
-            this.interactButton.style.opacity = "1";
-            this.interactButton.style.pointerEvents = "auto";
+  isTouchNearButton(touch) {
+    // Check if touch is near the interact button (80px radius + margin)
+    const buttonX = window.innerWidth - 80 - 80; // right: 80px, half width: 80px
+    const buttonY = window.innerHeight - 80 - 80; // bottom: 80px, half height: 80px
+    const distance = Math.sqrt(
+      Math.pow(touch.clientX - buttonX, 2) +
+        Math.pow(touch.clientY - buttonY, 2),
+    );
+    return distance < 120; // 80px button + 40px margin
+  }
+
+  setupEvents() {
+    this.boundHandlers = {
+      touchstart: (e) => {
+        if (!e.touches || e.touches.length === 0) return;
+        const touch = e.touches[0];
+        // Larger activation zone (60% instead of 50%)
+        if (
+          touch.clientX < window.innerWidth * 0.6 &&
+          !this.isTouchNearButton(touch)
+        ) {
+          this.handleTouchStart(touch);
         }
+      },
+      touchmove: (e) => {
+        if (!this.active || !e.touches || e.touches.length === 0) return;
+        e.preventDefault();
+        const touch = Array.from(e.touches).find(
+          (t) => t.identifier === this.touchId,
+        );
+        if (!touch) return;
+        this.handleTouchMove(touch);
+      },
+      touchend: (e) => {
+        if (!e.changedTouches || e.changedTouches.length === 0) return;
+        const touches = Array.from(e.changedTouches);
+        if (touches.find((t) => t.identifier === this.touchId)) {
+          this.handleTouchEnd();
+        }
+      },
+      touchcancel: () => {
+        if (this.active) {
+          this.handleTouchEnd();
+        }
+      },
+    };
+
+    window.addEventListener("touchstart", this.boundHandlers.touchstart, {
+      passive: false,
+    });
+    window.addEventListener("touchmove", this.boundHandlers.touchmove, {
+      passive: false,
+    });
+    window.addEventListener("touchend", this.boundHandlers.touchend);
+    window.addEventListener("touchcancel", this.boundHandlers.touchcancel);
+  }
+
+  handleTouchStart(touch) {
+    this.active = true;
+    this.touchId = touch.identifier;
+    this.baseX = touch.clientX;
+    this.baseY = touch.clientY;
+
+    this.container.style.left = `${this.baseX - 60}px`;
+    this.container.style.bottom = `${window.innerHeight - this.baseY - 60}px`;
+    this.container.style.opacity = "1";
+    this.container.style.pointerEvents = "auto";
+  }
+
+  handleTouchMove(touch) {
+    const dx = touch.clientX - this.baseX;
+    const dy = touch.clientY - this.baseY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance > this.maxDistance) {
+      const angle = Math.atan2(dy, dx);
+      this.stickX = Math.cos(angle) * this.maxDistance;
+      this.stickY = Math.sin(angle) * this.maxDistance;
+    } else {
+      this.stickX = dx;
+      this.stickY = dy;
     }
 
-    hide() {
-        if (this.interactButton) {
-            this.interactButton.style.opacity = "0";
-            this.interactButton.style.pointerEvents = "none";
-        }
+    this.stick.style.transform = `translate(calc(-50% + ${this.stickX}px), calc(-50% + ${this.stickY}px))`;
+
+    this.deltaX = this.stickX / this.maxDistance;
+    this.deltaY = this.stickY / this.maxDistance;
+  }
+
+  handleTouchEnd() {
+    this.active = false;
+    this.touchId = null;
+    this.deltaX = 0;
+    this.deltaY = 0;
+    this.stickX = 0;
+    this.stickY = 0;
+
+    this.stick.style.transform = "translate(-50%, -50%)";
+
+    this.container.style.opacity = "0";
+    setTimeout(() => {
+      this.container.style.pointerEvents = "none";
+    }, 200);
+  }
+
+  getValues() {
+    return {
+      x: this.deltaX,
+      y: this.deltaY,
+      active: this.active,
+    };
+  }
+
+  destroy() {
+    if (this.boundHandlers) {
+      window.removeEventListener("touchstart", this.boundHandlers.touchstart);
+      window.removeEventListener("touchmove", this.boundHandlers.touchmove);
+      window.removeEventListener("touchend", this.boundHandlers.touchend);
+      window.removeEventListener("touchcancel", this.boundHandlers.touchcancel);
+      this.boundHandlers = null;
     }
 
-    isTouchNearButton(touch) {
-        // Check if touch is near the interact button (80px radius + margin)
-        const buttonX = window.innerWidth - 80 - 80 // right: 80px, half width: 80px
-        const buttonY = window.innerHeight - 80 - 80 // bottom: 80px, half height: 80px
-        const distance = Math.sqrt(
-            Math.pow(touch.clientX - buttonX, 2) +
-            Math.pow(touch.clientY - buttonY, 2)
-        )
-        return distance < 120 // 80px button + 40px margin
+    if (this.container && this.container.parentElement) {
+      this.container.remove();
     }
 
-    setupEvents() {
-        this.boundHandlers = {
-            touchstart: (e) => {
-                if (!e.touches || e.touches.length === 0) return
-                const touch = e.touches[0]
-                // Larger activation zone (60% instead of 50%)
-                if (touch.clientX < window.innerWidth * 0.6 &&
-                    !this.isTouchNearButton(touch)) {
-                    this.handleTouchStart(touch)
-                }
-            },
-            touchmove: (e) => {
-                if (!this.active || !e.touches || e.touches.length === 0) return
-                e.preventDefault()
-                const touch = Array.from(e.touches).find(t => t.identifier === this.touchId)
-                if (!touch) return
-                this.handleTouchMove(touch)
-            },
-            touchend: (e) => {
-                if (!e.changedTouches || e.changedTouches.length === 0) return
-                const touches = Array.from(e.changedTouches)
-                if (touches.find(t => t.identifier === this.touchId)) {
-                    this.handleTouchEnd()
-                }
-            },
-            touchcancel: () => {
-                if (this.active) {
-                    this.handleTouchEnd()
-                }
-            }
-        }
-
-        window.addEventListener('touchstart', this.boundHandlers.touchstart, { passive: false })
-        window.addEventListener('touchmove', this.boundHandlers.touchmove, { passive: false })
-        window.addEventListener('touchend', this.boundHandlers.touchend)
-        window.addEventListener('touchcancel', this.boundHandlers.touchcancel)
+    if (this.interactButton && this.interactButton.parentElement) {
+      this.interactButton.remove();
     }
 
-    handleTouchStart(touch) {
-        this.active = true
-        this.touchId = touch.identifier
-        this.baseX = touch.clientX
-        this.baseY = touch.clientY
-
-        this.container.style.left = `${this.baseX - 60}px`
-        this.container.style.bottom = `${window.innerHeight - this.baseY - 60}px`
-        this.container.style.opacity = '1'
-        this.container.style.pointerEvents = 'auto'
+    if (this.zoneIndicator && this.zoneIndicator.parentElement) {
+      this.zoneIndicator.remove();
     }
 
-    handleTouchMove(touch) {
-        const dx = touch.clientX - this.baseX
-        const dy = touch.clientY - this.baseY
-        const distance = Math.sqrt(dx * dx + dy * dy)
-
-        if (distance > this.maxDistance) {
-            const angle = Math.atan2(dy, dx)
-            this.stickX = Math.cos(angle) * this.maxDistance
-            this.stickY = Math.sin(angle) * this.maxDistance
-        } else {
-            this.stickX = dx
-            this.stickY = dy
-        }
-
-        this.stick.style.transform = `translate(calc(-50% + ${this.stickX}px), calc(-50% + ${this.stickY}px))`
-
-        this.deltaX = this.stickX / this.maxDistance
-        this.deltaY = this.stickY / this.maxDistance
+    if (this.touchHint && this.touchHint.parentElement) {
+      this.touchHint.remove();
     }
-
-    handleTouchEnd() {
-        this.active = false
-        this.touchId = null
-        this.deltaX = 0
-        this.deltaY = 0
-        this.stickX = 0
-        this.stickY = 0
-
-        this.stick.style.transform = 'translate(-50%, -50%)'
-
-        this.container.style.opacity = '0'
-        setTimeout(() => {
-            this.container.style.pointerEvents = 'none'
-        }, 200)
-    }
-
-    getValues() {
-        return {
-            x: this.deltaX,
-            y: this.deltaY,
-            active: this.active
-        }
-    }
-
-    destroy() {
-        if (this.boundHandlers) {
-            window.removeEventListener('touchstart', this.boundHandlers.touchstart)
-            window.removeEventListener('touchmove', this.boundHandlers.touchmove)
-            window.removeEventListener('touchend', this.boundHandlers.touchend)
-            window.removeEventListener('touchcancel', this.boundHandlers.touchcancel)
-            this.boundHandlers = null
-        }
-
-        if (this.container && this.container.parentElement) {
-            this.container.remove()
-        }
-
-        if (this.interactButton && this.interactButton.parentElement) {
-            this.interactButton.remove()
-        }
-
-        if (this.zoneIndicator && this.zoneIndicator.parentElement) {
-            this.zoneIndicator.remove()
-        }
-
-        if (this.touchHint && this.touchHint.parentElement) {
-            this.touchHint.remove()
-        }
-    }
+  }
 }
