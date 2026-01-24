@@ -330,9 +330,9 @@ export default class Character {
       this.lastNearStationType = currentStationType;
     }
 
-    // Show language switcher only near info station
+    // Show language switcher only near info station (and no panel is open)
     if (this.experience.languageSwitcher) {
-      if (currentStationType === "info") {
+      if (currentStationType === "info" && !this.experience.ui.currentPanel) {
         this.experience.languageSwitcher.show();
       } else {
         this.experience.languageSwitcher.hide();

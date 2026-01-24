@@ -151,7 +151,7 @@ export default class Station {
       0,
       0,
       canvas.width,
-      canvas.height
+      canvas.height,
     );
     gradient.addColorStop(0, "#d4a574");
     gradient.addColorStop(1, "#c89666");

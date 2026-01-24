@@ -28,7 +28,7 @@ export default class VirtualJoystick {
         navigator.userAgent,
       );
 
-    return hasTouch || isIPad || isMobileUA;
+    return hasTouch || isMobileUA;
   }
 
   createJoystick() {
@@ -183,6 +183,13 @@ export default class VirtualJoystick {
       },
       touchmove: (e) => {
         if (!this.active || !e.touches || e.touches.length === 0) return;
+
+        // Don't prevent scroll if panel is open - deactivate joystick
+        if (this.experience?.uiManager?.currentPanel) {
+          this.handleTouchEnd();
+          return;
+        }
+
         e.preventDefault();
         const touch = Array.from(e.touches).find(
           (t) => t.identifier === this.touchId,

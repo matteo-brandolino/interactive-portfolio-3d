@@ -20,14 +20,11 @@ export default class UIManager {
 
   isTouchDevice() {
     const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    const isIPad =
-      navigator.userAgent.includes("iPad") ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     const isMobileUA =
       /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         navigator.userAgent,
       );
-    return hasTouch || isIPad || isMobileUA;
+    return hasTouch || isMobileUA;
   }
 
   createPanels() {
@@ -649,8 +646,8 @@ export default class UIManager {
     this.currentPanel = type;
 
     // Hide language switcher when opening any panel
-    if (this.experience?.languageSwitcher) {
-      this.experience.languageSwitcher.hide();
+    if (window.experience?.languageSwitcher) {
+      window.experience.languageSwitcher.hide();
     }
 
     gsap.killTweensOf(panel);
