@@ -32,7 +32,6 @@ import {
   FileText,
   Headphones,
   Gamepad2,
-  Hand,
 } from "lucide";
 
 export const icons = {
