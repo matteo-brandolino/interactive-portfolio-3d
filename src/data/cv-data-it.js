@@ -5,9 +5,12 @@ export const cvDataIT = {
       "Esplora quest'isola interattiva per conoscere il mio percorso come sviluppatore: progetti, competenze tecniche ed esperienze lavorative. Avvicinati alle stazioni di legno per iniziare!",
     controlsTitle: "Comandi",
     stationsTitle: "Stazioni dell'Isola",
-    tip: "Esplora l'isola e avvicinati alle stazioni di legno per scoprire i contenuti. Premi",
-    tipKey: "Space",
-    tipAction: "per interagire!",
+    tipDesktop: "Esplora l'isola e avvicinati alle stazioni di legno. Premi",
+    tipDesktopKey: "Space",
+    tipDesktopAction: "per interagire!",
+    tipMobile: "Esplora l'isola e avvicinati alle stazioni di legno. Tocca il",
+    tipMobileKey: "pulsante azione",
+    tipMobileAction: "per interagire!",
     controls: {
       desktop: [
         { key: "W / ↑", action: "Muovi avanti" },
@@ -16,6 +19,12 @@ export const cvDataIT = {
         { key: "D / →", action: "Muovi a destra" },
         { key: "Space", action: "Interagisci con le stazioni" },
         { key: "ESC", action: "Chiudi pannelli" },
+      ],
+      mobile: [
+        { key: "Tocca e trascina (sinistra)", action: "Muovi il personaggio" },
+        { key: "Tocca una stazione", action: "Interagisci automaticamente" },
+        { key: "Pulsante azione (basso-destra)", action: "Interagisci con le stazioni" },
+        { key: "Tocca ×", action: "Chiudi pannelli" },
       ],
     },
     stations: [

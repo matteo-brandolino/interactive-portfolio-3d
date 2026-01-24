@@ -1,3 +1,5 @@
+import { TouchPointer } from 'lucide';
+
 export default class VirtualJoystick {
     constructor() {
         this.active = false
@@ -70,10 +72,68 @@ export default class VirtualJoystick {
         this.container.appendChild(this.stick)
         document.body.appendChild(this.container)
 
+        // Create joystick zone indicator
+        this.zoneIndicator = document.createElement('div')
+        this.zoneIndicator.style.cssText = `
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(212, 165, 116, 0.15) 0%, transparent 100%);
+            border-right: 2px dashed rgba(139, 90, 43, 0.25);
+            pointer-events: none;
+            z-index: 50;
+            opacity: 1;
+            transition: opacity 0.3s;
+        `
+        document.body.appendChild(this.zoneIndicator)
+
+        // Add touch hint text (fades after first use)
+        const hasSeenHint = localStorage.getItem('joystick-hint-seen')
+        if (!hasSeenHint) {
+            this.touchHint = document.createElement('div')
+            this.touchHint.textContent = 'Tocca qui per muoverti'
+            this.touchHint.style.cssText = `
+                position: fixed;
+                left: 20%;
+                bottom: 140px;
+                transform: translateX(-50%);
+                background: rgba(212, 165, 116, 0.95);
+                color: #3d2817;
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
+                border: 2px solid #8b5a2b;
+                font-size: 0.9rem;
+                font-weight: 600;
+                pointer-events: none;
+                z-index: 100;
+                opacity: 1;
+                transition: opacity 0.5s;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            `
+            document.body.appendChild(this.touchHint)
+
+            // Fade out hint after first touch
+            const hideHint = () => {
+                if (this.touchHint) {
+                    this.touchHint.style.opacity = '0'
+                    setTimeout(() => {
+                        this.touchHint?.remove()
+                        this.touchHint = null
+                    }, 500)
+                    localStorage.setItem('joystick-hint-seen', 'true')
+                    window.removeEventListener('touchstart', hideHint)
+                }
+            }
+            window.addEventListener('touchstart', hideHint)
+        }
+
         // Create interaction button
         this.interactButton = document.createElement('button')
         this.interactButton.id = 'interact-button'
-        this.interactButton.innerHTML = '⚡'
+        const icon = TouchPointer.toSvg({ size: 32, color: '#3d2817', strokeWidth: 2.5 })
+        this.interactButton.innerHTML = icon
         this.interactButton.setAttribute('aria-label', 'Interagisci con la stazione')
         this.interactButton.style.cssText = `
             position: fixed;
@@ -82,26 +142,33 @@ export default class VirtualJoystick {
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            background: rgba(59, 130, 246, 0.9);
-            border: 3px solid rgba(255, 255, 255, 0.6);
-            color: white;
-            font-size: 36px;
+            background: linear-gradient(135deg, #d4a574 0%, #c89666 100%);
+            border: 3px solid #8b5a2b;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             z-index: 1000;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow:
+                0 4px 12px rgba(139, 90, 43, 0.4),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            transition: transform 0.2s, box-shadow 0.2s;
         `
         document.body.appendChild(this.interactButton)
 
-        // Handle interaction button
+        // Handle interaction button with active state feedback
         this.interactButton.addEventListener('touchstart', (e) => {
             e.preventDefault()
+            this.interactButton.style.transform = 'scale(0.95)'
             this.triggerInteraction()
+        })
+
+        this.interactButton.addEventListener('touchend', (e) => {
+            e.preventDefault()
+            this.interactButton.style.transform = 'scale(1)'
         })
     }
 
@@ -110,10 +177,23 @@ export default class VirtualJoystick {
         window.dispatchEvent(new CustomEvent('mobileInteract'))
     }
 
+    isTouchNearButton(touch) {
+        // Check if touch is near the interact button (80px radius + margin)
+        const buttonX = window.innerWidth - 80 - 80 // right: 80px, half width: 80px
+        const buttonY = window.innerHeight - 80 - 80 // bottom: 80px, half height: 80px
+        const distance = Math.sqrt(
+            Math.pow(touch.clientX - buttonX, 2) +
+            Math.pow(touch.clientY - buttonY, 2)
+        )
+        return distance < 120 // 80px button + 40px margin
+    }
+
     setupEvents() {
         window.addEventListener('touchstart', (e) => {
             const touch = e.touches[0]
-            if (touch.clientX < window.innerWidth / 2) {
+            // Larger activation zone (60% instead of 50%)
+            if (touch.clientX < window.innerWidth * 0.6 &&
+                !this.isTouchNearButton(touch)) {
                 this.handleTouchStart(touch)
             }
         }, { passive: false })

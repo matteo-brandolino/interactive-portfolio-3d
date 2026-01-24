@@ -17,6 +17,14 @@ export default class UIManager {
     });
   }
 
+  isTouchDevice() {
+    const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+    const isIPad = navigator.userAgent.includes('iPad') ||
+                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+    const isMobileUA = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    return hasTouch || isIPad || isMobileUA
+  }
+
   createPanels() {
     const types = ["info", "work", "skills", "projects", "about"];
 
@@ -57,8 +65,14 @@ export default class UIManager {
 
   getInfoContent(data) {
     const t = i18n.t.bind(i18n);
+    const isMobile = this.isTouchDevice();
 
-    const desktopControls = data.controls.desktop
+    // Select appropriate controls based on device
+    const controlsArray = isMobile ?
+        (data.controls.mobile || data.controls.desktop) :
+        data.controls.desktop;
+
+    const controlsHTML = controlsArray
       .map(
         (control) => `
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
@@ -92,6 +106,11 @@ export default class UIManager {
       })
       .join("");
 
+    // Select appropriate tip message based on device
+    const tipText = isMobile ? data.tipMobile : data.tipDesktop;
+    const tipKey = isMobile ? data.tipMobileKey : data.tipDesktopKey;
+    const tipAction = isMobile ? data.tipMobileAction : data.tipDesktopAction;
+
     const headerIcon = createIcon(t("info.icon"), {
       size: 24,
       color: "#8b5a2b",
@@ -114,7 +133,7 @@ export default class UIManager {
                     ${createIcon("gamepad", { size: "24", color: "#3e2723" })} ${data.controlsTitle}
                 </h3>
                 <div style="background: rgba(139, 90, 43, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 2px solid #8b5a2b;">
-                    ${desktopControls}
+                    ${controlsHTML}
                 </div>
 
                 <h3 style="font-size: 1.25rem; font-weight: 600; color: #3e2723; margin-bottom: 1rem; font-family: Georgia, serif;">
@@ -126,11 +145,11 @@ export default class UIManager {
 
                 <div style="background: rgba(212, 165, 116, 0.3); padding: 1rem; border-radius: 8px; border: 2px solid #8b5a2b; margin-top: 1.5rem;">
                     <p style="color: #3e2723; font-style: italic; margin: 0;">
-                        ${createIcon("lightbulb", { size: "20", color: "#3e2723" })} ${
-                          data.tip
-                        } <kbd style="background: #8b5a2b; color: #f5e6d3; padding: 0.15rem 0.5rem; border-radius: 4px; font-family: monospace;">${
-      data.tipKey
-    }</kbd> ${data.tipAction}
+                        ${createIcon("lightbulb", { size: "20", color: "#3e2723" })} ${tipText}
+                        <kbd style="background: #8b5a2b; color: #f5e6d3; padding: 0.15rem 0.5rem; border-radius: 4px; font-family: monospace;">
+                            ${tipKey}
+                        </kbd>
+                        ${tipAction}
                     </p>
                 </div>
             </div>

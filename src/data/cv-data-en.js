@@ -5,9 +5,12 @@ export const cvDataEN = {
       "Explore this interactive island to learn about my journey as a developer: projects, technical skills, and work experience. Approach the wooden stations to get started!",
     controlsTitle: "Controls",
     stationsTitle: "Island Stations",
-    tip: "Explore the island and approach the wooden stations to discover the contents. Press",
-    tipKey: "Space",
-    tipAction: "to interact!",
+    tipDesktop: "Explore the island and approach the wooden stations. Press",
+    tipDesktopKey: "Space",
+    tipDesktopAction: "to interact!",
+    tipMobile: "Explore the island and approach the wooden stations. Tap the",
+    tipMobileKey: "action button",
+    tipMobileAction: "to interact!",
     controls: {
       desktop: [
         { key: "W / ↑", action: "Move forward" },
@@ -16,6 +19,12 @@ export const cvDataEN = {
         { key: "D / →", action: "Move right" },
         { key: "Space", action: "Interact with stations" },
         { key: "ESC", action: "Close panels" },
+      ],
+      mobile: [
+        { key: "Touch & drag (left side)", action: "Move character" },
+        { key: "Touch a station", action: "Interact automatically" },
+        { key: "Action button (bottom-right)", action: "Interact with stations" },
+        { key: "Tap ×", action: "Close panels" },
       ],
     },
     stations: [
