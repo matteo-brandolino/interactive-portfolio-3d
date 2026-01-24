@@ -34,7 +34,7 @@ export default class VirtualJoystick {
     this.container.style.cssText = `
             position: fixed;
             bottom: 80px;
-            right: 80px;
+            left: 80px;
             width: 120px;
             height: 120px;
             pointer-events: none;
@@ -49,8 +49,8 @@ export default class VirtualJoystick {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            border: 3px solid rgba(255, 255, 255, 0.4);
+            background: rgba(212, 165, 116, 0.3);
+            border: 3px solid rgba(139, 90, 43, 0.6);
             backdrop-filter: blur(10px);
         `;
 
@@ -60,12 +60,16 @@ export default class VirtualJoystick {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: rgba(59, 130, 246, 0.8);
-            border: 3px solid rgba(255, 255, 255, 0.6);
+            background: linear-gradient(135deg, #d4a574 0%, #c89666 100%);
+            border: 3px solid #8b5a2b;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
             transition: all 0.1s;
+            box-shadow:
+                0 2px 8px rgba(139, 90, 43, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3),
+                inset 0 -1px 2px rgba(0, 0, 0, 0.2);
         `;
 
     this.container.appendChild(this.base);
@@ -79,7 +83,7 @@ export default class VirtualJoystick {
       this.touchHint.textContent = "Tocca qui per muoverti";
       this.touchHint.style.cssText = `
                 position: fixed;
-                right: 20%;
+                left: 20%;
                 bottom: 140px;
                 transform: translateX(-50%);
                 background: rgba(212, 165, 116, 0.95);
@@ -125,7 +129,7 @@ export default class VirtualJoystick {
     this.interactButton.style.cssText = `
             position: fixed;
             bottom: 80px;
-            left: 80px;
+            right: 80px;
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -145,6 +149,7 @@ export default class VirtualJoystick {
             transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s;
             opacity: 0;
             pointer-events: none;
+            color: #4a3728;
         `;
     document.body.appendChild(this.interactButton);
 
