@@ -2,6 +2,7 @@ import { createIcon } from "../Utils/Icons.js";
 
 export default class VirtualJoystick {
   constructor() {
+    this.experience = window.experience;
     this.active = false;
     this.baseX = 0;
     this.baseY = 0;
@@ -77,45 +78,6 @@ export default class VirtualJoystick {
     this.container.appendChild(this.base);
     this.container.appendChild(this.stick);
     document.body.appendChild(this.container);
-
-    const hasSeenHint = localStorage.getItem("joystick-hint-seen");
-    if (!hasSeenHint) {
-      this.touchHint = document.createElement("div");
-      this.touchHint.textContent = "Tocca qui per muoverti";
-      this.touchHint.style.cssText = `
-                position: fixed;
-                left: 20%;
-                bottom: 35%;
-                transform: translateX(-50%);
-                background: rgba(212, 165, 116, 0.95);
-                color: #3d2817;
-                padding: 0.5rem 1rem;
-                border-radius: 8px;
-                border: 2px solid #8b5a2b;
-                font-size: 0.9rem;
-                font-weight: 600;
-                pointer-events: none;
-                z-index: 100;
-                opacity: 1;
-                transition: opacity 0.5s;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            `;
-      document.body.appendChild(this.touchHint);
-
-      // Fade out hint after first touch
-      const hideHint = () => {
-        if (this.touchHint) {
-          this.touchHint.style.opacity = "0";
-          setTimeout(() => {
-            this.touchHint?.remove();
-            this.touchHint = null;
-          }, 500);
-          localStorage.setItem("joystick-hint-seen", "true");
-          window.removeEventListener("touchstart", hideHint);
-        }
-      };
-      window.addEventListener("touchstart", hideHint);
-    }
 
     this.interactButton = document.createElement("button");
     this.interactButton.id = "interact-button";
@@ -204,6 +166,12 @@ export default class VirtualJoystick {
       touchstart: (e) => {
         if (!e.touches || e.touches.length === 0) return;
         const touch = e.touches[0];
+
+        // Don't activate joystick if a panel is currently open
+        if (this.experience?.uiManager?.currentPanel) {
+          return;
+        }
+
         // Activate joystick on entire bottom area (bottom 35% of screen)
         const bottomZoneThreshold = window.innerHeight * 0.65;
         if (

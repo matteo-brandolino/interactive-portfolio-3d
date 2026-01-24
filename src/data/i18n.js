@@ -6,7 +6,7 @@ class I18n {
 
     detectLanguage() {
         const browserLang = navigator.language.split('-')[0]
-        return browserLang === 'it' ? 'it' : 'en'
+        return browserLang === 'en' ? 'en' : 'it'
     }
 
     getStoredLanguage() {
