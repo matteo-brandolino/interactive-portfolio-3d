@@ -109,7 +109,7 @@ export default class Station {
     const textWidth = textMetrics.width;
 
     // Calculate canvas width with padding (min 512, max 800)
-    const padding = 100;
+    const padding = 120;
     canvas.width = Math.max(512, Math.min(800, textWidth + padding));
     canvas.height = 128;
 
