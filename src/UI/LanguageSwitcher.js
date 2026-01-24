@@ -16,7 +16,7 @@ export default class LanguageSwitcher {
     this.container.style.cssText = `
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 20px;
             z-index: 1000;
             font-family: Georgia, serif;
             opacity: 0;
@@ -131,13 +131,19 @@ export default class LanguageSwitcher {
 
     document.body.appendChild(this.container);
 
-    gsap.from(this.container, {
-      y: -100,
-      opacity: 0,
+    gsap.to(this.container, {
+      y: 0,
+      opacity: 1,
       duration: 0.8,
       ease: "back.out(1.7)",
       delay: 0.5,
+      onComplete: () => {
+        this.container.style.pointerEvents = "auto";
+      }
     });
+
+    // Set initial position for animation
+    gsap.set(this.container, { y: -100 });
   }
 
   createLangOption(lang, isActive) {

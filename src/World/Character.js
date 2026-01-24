@@ -318,15 +318,6 @@ export default class Character {
         }
       }
 
-      if (this.experience.languageSwitcher) {
-        // Hide if any panel is open OR not near info station
-        if (currentStationType === "info" && !this.experience.ui?.currentPanel) {
-          this.experience.languageSwitcher.show();
-        } else {
-          this.experience.languageSwitcher.hide();
-        }
-      }
-
       if (this.joystick) {
         if (nearStation) {
           this.joystick.show();
@@ -336,6 +327,15 @@ export default class Character {
       }
 
       this.lastNearStationType = currentStationType;
+    }
+
+    // Show language switcher only near info station
+    if (this.experience.languageSwitcher) {
+      if (currentStationType === "info") {
+        this.experience.languageSwitcher.show();
+      } else {
+        this.experience.languageSwitcher.hide();
+      }
     }
 
     if (nearStation && this.controls.keys.interact) {

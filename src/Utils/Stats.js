@@ -13,7 +13,7 @@ export default class Stats {
         this.panel.id = 'stats-panel'
         this.panel.style.cssText = `
             position: fixed;
-            top: 10px;
+            bottom: 10px;
             left: 10px;
             background: rgba(0, 0, 0, 0.8);
             color: #0f0;
