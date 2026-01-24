@@ -1,4 +1,4 @@
-import { TouchPointer } from 'lucide';
+import { Hand } from 'lucide';
 
 export default class VirtualJoystick {
     constructor() {
@@ -132,7 +132,7 @@ export default class VirtualJoystick {
         // Create interaction button
         this.interactButton = document.createElement('button')
         this.interactButton.id = 'interact-button'
-        const icon = TouchPointer.toSvg({ size: 32, color: '#3d2817', strokeWidth: 2.5 })
+        const icon = Hand.toSvg({ size: 32, color: '#3d2817', strokeWidth: 2.5 })
         this.interactButton.innerHTML = icon
         this.interactButton.setAttribute('aria-label', 'Interagisci con la stazione')
         this.interactButton.style.cssText = `
@@ -155,7 +155,9 @@ export default class VirtualJoystick {
                 inset 0 -2px 4px rgba(0, 0, 0, 0.2);
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s;
+            opacity: 0;
+            pointer-events: none;
         `
         document.body.appendChild(this.interactButton)
 
@@ -175,6 +177,20 @@ export default class VirtualJoystick {
     triggerInteraction() {
         // Dispatch a custom event that Character will listen to
         window.dispatchEvent(new CustomEvent('mobileInteract'))
+    }
+
+    show() {
+        if (this.interactButton) {
+            this.interactButton.style.opacity = "1";
+            this.interactButton.style.pointerEvents = "auto";
+        }
+    }
+
+    hide() {
+        if (this.interactButton) {
+            this.interactButton.style.opacity = "0";
+            this.interactButton.style.pointerEvents = "none";
+        }
     }
 
     isTouchNearButton(touch) {

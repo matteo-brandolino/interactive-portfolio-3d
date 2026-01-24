@@ -319,10 +319,19 @@ export default class Character {
       }
 
       if (this.experience.languageSwitcher) {
-        if (currentStationType === "info") {
+        // Hide if any panel is open OR not near info station
+        if (currentStationType === "info" && !this.experience.ui?.currentPanel) {
           this.experience.languageSwitcher.show();
         } else {
           this.experience.languageSwitcher.hide();
+        }
+      }
+
+      if (this.joystick) {
+        if (nearStation) {
+          this.joystick.show();
+        } else {
+          this.joystick.hide();
         }
       }
 
