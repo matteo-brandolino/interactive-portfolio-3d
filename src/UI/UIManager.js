@@ -650,6 +650,14 @@ export default class UIManager {
       window.experience.languageSwitcher.hide();
     }
 
+    // Deactivate and hide virtual joystick when opening any panel
+    if (window.experience?.world?.character?.joystick) {
+      const joystick = window.experience.world.character.joystick;
+      if (joystick.active) {
+        joystick.handleTouchEnd();
+      }
+    }
+
     gsap.killTweensOf(panel);
 
     panel.classList.add("active");

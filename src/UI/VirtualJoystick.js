@@ -168,7 +168,7 @@ export default class VirtualJoystick {
         const touch = e.touches[0];
 
         // Don't activate joystick if a panel is currently open
-        if (this.experience?.uiManager?.currentPanel) {
+        if (this.experience?.ui?.currentPanel) {
           return;
         }
 
@@ -185,7 +185,7 @@ export default class VirtualJoystick {
         if (!this.active || !e.touches || e.touches.length === 0) return;
 
         // Don't prevent scroll if panel is open - deactivate joystick
-        if (this.experience?.uiManager?.currentPanel) {
+        if (this.experience?.ui?.currentPanel) {
           this.handleTouchEnd();
           return;
         }
