@@ -22,9 +22,10 @@ export default class Character {
     this.joystick = new VirtualJoystick();
 
     // Listen for mobile interaction event
-    window.addEventListener('mobileInteract', () => {
+    this.mobileInteractHandler = () => {
       this.controls.keys.interact = true
-    })
+    }
+    window.addEventListener('mobileInteract', this.mobileInteractHandler)
 
     this.mixer = null;
     this.animations = {};
@@ -384,5 +385,25 @@ export default class Character {
     }
 
     return false;
+  }
+
+  destroy() {
+    if (this.mobileInteractHandler) {
+      window.removeEventListener('mobileInteract', this.mobileInteractHandler)
+      this.mobileInteractHandler = null
+    }
+
+    if (this.joystick) {
+      this.joystick.destroy()
+      this.joystick = null
+    }
+
+    if (this.controls) {
+      this.controls = null
+    }
+
+    if (this.model && this.model.parent) {
+      this.scene.remove(this.model)
+    }
   }
 }

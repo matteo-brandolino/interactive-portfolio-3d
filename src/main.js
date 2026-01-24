@@ -19,9 +19,21 @@ window.addEventListener('error', (event) => {
   if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
     loadingScreen.innerHTML = `
       <div style="text-align:center;color:#fff;max-width:500px;padding:2rem;">
-        <h2 style="margin-bottom:1rem;">Errore di Caricamento</h2>
-        <p style="margin-bottom:1.5rem;">Si è verificato un problema durante il caricamento del portfolio.</p>
-        <button onclick="location.reload()" style="background:#4f46e5;color:#fff;border:none;padding:0.75rem 1.5rem;border-radius:8px;cursor:pointer;font-size:1rem;">
+        <h2 style="margin-bottom:1rem;color:#E7DDCF;font-family:Georgia,serif;">Errore di Caricamento</h2>
+        <p style="margin-bottom:1.5rem;color:#E7DDCF;">Si è verificato un problema durante il caricamento del portfolio.</p>
+        <button onclick="location.reload()" style="
+          background:linear-gradient(135deg,#d4a574 0%,#c89666 100%);
+          color:#3d2817;
+          border:3px solid #8b5a2b;
+          padding:0.75rem 1.5rem;
+          border-radius:8px;
+          cursor:pointer;
+          font-size:1rem;
+          font-weight:600;
+          font-family:Georgia,serif;
+          box-shadow:0 4px 12px rgba(139,90,43,0.4),inset 0 2px 4px rgba(255,255,255,0.3),inset 0 -2px 4px rgba(0,0,0,0.2);
+          transition:transform 0.2s,box-shadow 0.2s;
+        " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
           Ricarica Pagina
         </button>
       </div>
@@ -39,9 +51,9 @@ window.addEventListener('DOMContentLoaded', () => {
       const loadingScreen = document.getElementById('loading-screen')
       loadingScreen.innerHTML = `
         <div style="text-align:center;color:#fff;max-width:500px;padding:2rem;">
-          <h2 style="margin-bottom:1rem;">Browser Non Supportato</h2>
-          <p style="margin-bottom:1rem;">Questo portfolio richiede WebGL per funzionare correttamente.</p>
-          <p style="color:#888;font-size:0.9rem;">Per favore usa un browser moderno come Chrome, Firefox, Safari o Edge.</p>
+          <h2 style="margin-bottom:1rem;color:#E7DDCF;font-family:Georgia,serif;">Browser Non Supportato</h2>
+          <p style="margin-bottom:1rem;color:#E7DDCF;">Questo portfolio richiede WebGL per funzionare correttamente.</p>
+          <p style="color:#c89666;font-size:0.9rem;">Per favore usa un browser moderno come Chrome, Firefox, Safari o Edge.</p>
         </div>
       `
       return
@@ -71,6 +83,7 @@ if ('serviceWorker' in navigator) {
 
 function updateControlsHint() {
     const controlsHint = document.getElementById('controls-hint')
+    if (!controlsHint) return
     const isMobile = isTouchDevice()
 
     if (isMobile) {

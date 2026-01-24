@@ -12,6 +12,7 @@ export default class VirtualJoystick {
         this.deltaX = 0
         this.deltaY = 0
         this.maxDistance = 50
+        this.boundHandlers = null
 
         if (this.isTouchDevice()) {
             this.createJoystick()
@@ -205,37 +206,41 @@ export default class VirtualJoystick {
     }
 
     setupEvents() {
-        window.addEventListener('touchstart', (e) => {
-            const touch = e.touches[0]
-            // Larger activation zone (60% instead of 50%)
-            if (touch.clientX < window.innerWidth * 0.6 &&
-                !this.isTouchNearButton(touch)) {
-                this.handleTouchStart(touch)
-            }
-        }, { passive: false })
-
-        window.addEventListener('touchmove', (e) => {
-            if (this.active) {
+        this.boundHandlers = {
+            touchstart: (e) => {
+                if (!e.touches || e.touches.length === 0) return
+                const touch = e.touches[0]
+                // Larger activation zone (60% instead of 50%)
+                if (touch.clientX < window.innerWidth * 0.6 &&
+                    !this.isTouchNearButton(touch)) {
+                    this.handleTouchStart(touch)
+                }
+            },
+            touchmove: (e) => {
+                if (!this.active || !e.touches || e.touches.length === 0) return
                 e.preventDefault()
                 const touch = Array.from(e.touches).find(t => t.identifier === this.touchId)
-                if (touch) {
-                    this.handleTouchMove(touch)
+                if (!touch) return
+                this.handleTouchMove(touch)
+            },
+            touchend: (e) => {
+                if (!e.changedTouches || e.changedTouches.length === 0) return
+                const touches = Array.from(e.changedTouches)
+                if (touches.find(t => t.identifier === this.touchId)) {
+                    this.handleTouchEnd()
+                }
+            },
+            touchcancel: () => {
+                if (this.active) {
+                    this.handleTouchEnd()
                 }
             }
-        }, { passive: false })
+        }
 
-        window.addEventListener('touchend', (e) => {
-            const touches = Array.from(e.changedTouches)
-            if (touches.find(t => t.identifier === this.touchId)) {
-                this.handleTouchEnd()
-            }
-        })
-
-        window.addEventListener('touchcancel', () => {
-            if (this.active) {
-                this.handleTouchEnd()
-            }
-        })
+        window.addEventListener('touchstart', this.boundHandlers.touchstart, { passive: false })
+        window.addEventListener('touchmove', this.boundHandlers.touchmove, { passive: false })
+        window.addEventListener('touchend', this.boundHandlers.touchend)
+        window.addEventListener('touchcancel', this.boundHandlers.touchcancel)
     }
 
     handleTouchStart(touch) {
@@ -291,6 +296,32 @@ export default class VirtualJoystick {
             x: this.deltaX,
             y: this.deltaY,
             active: this.active
+        }
+    }
+
+    destroy() {
+        if (this.boundHandlers) {
+            window.removeEventListener('touchstart', this.boundHandlers.touchstart)
+            window.removeEventListener('touchmove', this.boundHandlers.touchmove)
+            window.removeEventListener('touchend', this.boundHandlers.touchend)
+            window.removeEventListener('touchcancel', this.boundHandlers.touchcancel)
+            this.boundHandlers = null
+        }
+
+        if (this.container && this.container.parentElement) {
+            this.container.remove()
+        }
+
+        if (this.interactButton && this.interactButton.parentElement) {
+            this.interactButton.remove()
+        }
+
+        if (this.zoneIndicator && this.zoneIndicator.parentElement) {
+            this.zoneIndicator.remove()
+        }
+
+        if (this.touchHint && this.touchHint.parentElement) {
+            this.touchHint.remove()
         }
     }
 }
