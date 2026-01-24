@@ -93,7 +93,7 @@ export default class Experience {
       }
 
       if (loadingText) {
-        loadingText.textContent = `Caricamento portfolio... ${Math.round(validProgress)}%`;
+        loadingText.textContent = `Caricamento portfolio...`;
       }
     });
 
