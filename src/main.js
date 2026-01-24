@@ -88,7 +88,7 @@ function updateControlsHint() {
 
     if (isMobile) {
         controlsHint.innerHTML = `
-            <strong>Mobile Controls:</strong> Touch and drag on <strong>left</strong> to move | Tap <strong>right button</strong> to interact
+            <strong>Mobile Controls:</strong> Touch and drag on <strong>bottom area</strong> to move | Tap <strong>corner button</strong> to interact
         `
     } else {
         controlsHint.innerHTML = `

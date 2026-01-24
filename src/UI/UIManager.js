@@ -5,6 +5,7 @@ import { createIcon } from "../Utils/Icons.js";
 
 export default class UIManager {
   constructor() {
+    this.experience = window.experience;
     this.panels = {};
     this.currentPanel = null;
     this.panelsContainer = document.getElementById("panels-container");
@@ -646,6 +647,11 @@ export default class UIManager {
     if (!panel) return;
 
     this.currentPanel = type;
+
+    // Hide language switcher when opening any panel
+    if (this.experience?.languageSwitcher) {
+      this.experience.languageSwitcher.hide();
+    }
 
     gsap.killTweensOf(panel);
 

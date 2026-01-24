@@ -1,3 +1,5 @@
+import { createIcon } from "../Utils/Icons.js";
+
 export default class VirtualJoystick {
   constructor() {
     this.active = false;
@@ -76,7 +78,6 @@ export default class VirtualJoystick {
     this.container.appendChild(this.stick);
     document.body.appendChild(this.container);
 
-    // Add touch hint text (fades after first use)
     const hasSeenHint = localStorage.getItem("joystick-hint-seen");
     if (!hasSeenHint) {
       this.touchHint = document.createElement("div");
@@ -84,7 +85,7 @@ export default class VirtualJoystick {
       this.touchHint.style.cssText = `
                 position: fixed;
                 left: 20%;
-                bottom: 140px;
+                bottom: 35%;
                 transform: translateX(-50%);
                 background: rgba(212, 165, 116, 0.95);
                 color: #3d2817;
@@ -119,17 +120,19 @@ export default class VirtualJoystick {
     this.interactButton = document.createElement("button");
     this.interactButton.id = "interact-button";
 
-    this.interactButton.innerHTML = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2" /><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2" /><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" /></svg>
-`;
+    this.interactButton.innerHTML = createIcon("action", {
+      size: "36",
+      color: "#4a3728",
+      strokeWidth: "2.5",
+    });
     this.interactButton.setAttribute(
       "aria-label",
       "Interagisci con la stazione",
     );
     this.interactButton.style.cssText = `
             position: fixed;
-            bottom: 80px;
-            right: 80px;
+            bottom: 20px;
+            right: 20px;
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -187,8 +190,8 @@ export default class VirtualJoystick {
 
   isTouchNearButton(touch) {
     // Check if touch is near the interact button (80px radius + margin)
-    const buttonX = window.innerWidth - 80 - 80; // right: 80px, half width: 80px
-    const buttonY = window.innerHeight - 80 - 80; // bottom: 80px, half height: 80px
+    const buttonX = window.innerWidth - 20 - 40; // right: 20px, radius: 40px
+    const buttonY = window.innerHeight - 20 - 40; // bottom: 20px, radius: 40px
     const distance = Math.sqrt(
       Math.pow(touch.clientX - buttonX, 2) +
         Math.pow(touch.clientY - buttonY, 2),
@@ -201,9 +204,10 @@ export default class VirtualJoystick {
       touchstart: (e) => {
         if (!e.touches || e.touches.length === 0) return;
         const touch = e.touches[0];
-        // Larger activation zone (60% instead of 50%)
+        // Activate joystick on entire bottom area (bottom 35% of screen)
+        const bottomZoneThreshold = window.innerHeight * 0.65;
         if (
-          touch.clientX < window.innerWidth * 0.6 &&
+          touch.clientY > bottomZoneThreshold &&
           !this.isTouchNearButton(touch)
         ) {
           this.handleTouchStart(touch);
