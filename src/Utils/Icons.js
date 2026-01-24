@@ -32,9 +32,13 @@ import {
   FileText,
   Headphones,
   Gamepad2,
+  Hand,
 } from "lucide";
 
 export const icons = {
+  //Joystick
+  action: Hand,
+
   // Skills categories
   frontend: Palette,
   backend: Settings,

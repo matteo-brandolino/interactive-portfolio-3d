@@ -20,9 +20,6 @@ export default class VirtualJoystick {
 
   isTouchDevice() {
     const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    const isIPad =
-      navigator.userAgent.includes("iPad") ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     const isMobileUA =
       /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         navigator.userAgent,
@@ -37,7 +34,7 @@ export default class VirtualJoystick {
     this.container.style.cssText = `
             position: fixed;
             bottom: 80px;
-            left: 80px;
+            right: 80px;
             width: 120px;
             height: 120px;
             pointer-events: none;
@@ -75,23 +72,6 @@ export default class VirtualJoystick {
     this.container.appendChild(this.stick);
     document.body.appendChild(this.container);
 
-    // Create joystick zone indicator
-    this.zoneIndicator = document.createElement("div");
-    this.zoneIndicator.style.cssText = `
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 40%;
-            height: 100%;
-            background: linear-gradient(90deg, rgba(212, 165, 116, 0.15) 0%, transparent 100%);
-            border-right: 2px dashed rgba(139, 90, 43, 0.25);
-            pointer-events: none;
-            z-index: 50;
-            opacity: 1;
-            transition: opacity 0.3s;
-        `;
-    document.body.appendChild(this.zoneIndicator);
-
     // Add touch hint text (fades after first use)
     const hasSeenHint = localStorage.getItem("joystick-hint-seen");
     if (!hasSeenHint) {
@@ -99,7 +79,7 @@ export default class VirtualJoystick {
       this.touchHint.textContent = "Tocca qui per muoverti";
       this.touchHint.style.cssText = `
                 position: fixed;
-                left: 20%;
+                right: 20%;
                 bottom: 140px;
                 transform: translateX(-50%);
                 background: rgba(212, 165, 116, 0.95);
@@ -136,18 +116,7 @@ export default class VirtualJoystick {
     this.interactButton.id = "interact-button";
 
     this.interactButton.innerHTML = `
-<svg xmlns="http://www.w3.org/2000/svg"
-     width="36" height="36"
-     viewBox="0 0 24 24"
-     fill="none"
-     stroke="#3d2817"
-     stroke-width="2.5"
-     stroke-linecap="round"
-     stroke-linejoin="round">
-  <path d="M18 11V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8"/>
-  <path d="M14 10l5 5"/>
-  <path d="M19 10v5h-5"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2" /><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2" /><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" /></svg>
 `;
     this.interactButton.setAttribute(
       "aria-label",
@@ -156,7 +125,7 @@ export default class VirtualJoystick {
     this.interactButton.style.cssText = `
             position: fixed;
             bottom: 80px;
-            right: 80px;
+            left: 80px;
             width: 80px;
             height: 80px;
             border-radius: 50%;

@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import { cvData, getCVData } from "../data/cv-data.js";
+import { getCVData } from "../data/cv-data.js";
 import { i18n } from "../data/i18n.js";
 import { createIcon } from "../Utils/Icons.js";
 
@@ -18,11 +18,15 @@ export default class UIManager {
   }
 
   isTouchDevice() {
-    const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
-    const isIPad = navigator.userAgent.includes('iPad') ||
-                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
-    const isMobileUA = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-    return hasTouch || isIPad || isMobileUA
+    const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const isIPad =
+      navigator.userAgent.includes("iPad") ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const isMobileUA =
+      /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent,
+      );
+    return hasTouch || isIPad || isMobileUA;
   }
 
   createPanels() {
@@ -68,9 +72,9 @@ export default class UIManager {
     const isMobile = this.isTouchDevice();
 
     // Select appropriate controls based on device
-    const controlsArray = isMobile ?
-        (data.controls.mobile || data.controls.desktop) :
-        data.controls.desktop;
+    const controlsArray = isMobile
+      ? data.controls.mobile || data.controls.desktop
+      : data.controls.desktop;
 
     const controlsHTML = controlsArray
       .map(
@@ -83,7 +87,7 @@ export default class UIManager {
                     ${control.action}
                 </span>
             </div>
-        `
+        `,
       )
       .join("");
 
@@ -178,7 +182,7 @@ export default class UIManager {
                 </p>
                 <div style="margin-bottom: 1rem;">
                     <strong style="color: #3e2723;">${t(
-                      "work.technologies"
+                      "work.technologies",
                     )}</strong>
                     <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
                         ${exp.technologies
@@ -187,7 +191,7 @@ export default class UIManager {
                             <span style="background: #c8e6c9; color: #1b5e20; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; border: 1px solid #81c784;">
                                 ${tech}
                             </span>
-                        `
+                        `,
                           )
                           .join("")}
                     </div>
@@ -197,14 +201,14 @@ export default class UIManager {
                     ? `
                     <div>
                         <strong style="color: #3e2723;">${t(
-                          "work.achievements"
+                          "work.achievements",
                         )}</strong>
                         <ul style="margin-top: 0.5rem; padding-left: 1.5rem; color: #4a3728;">
                             ${exp.achievements
                               .map(
                                 (achievement) => `
                                 <li style="margin-bottom: 0.25rem;">${achievement}</li>
-                            `
+                            `,
                               )
                               .join("")}
                         </ul>
@@ -213,7 +217,7 @@ export default class UIManager {
                     : ""
                 }
             </div>
-        `
+        `,
       )
       .join("");
 
@@ -259,8 +263,10 @@ export default class UIManager {
                             <span style="color: #6d5438; font-size: 0.875rem;">${
                               skill.years
                             } ${
-                      skill.years === 1 ? t("skills.year") : t("skills.years")
-                    }</span>
+                              skill.years === 1
+                                ? t("skills.year")
+                                : t("skills.years")
+                            }</span>
                         </div>
                         <div style="background: #d7c4ad; height: 10px; border-radius: 6px; overflow: hidden; border: 1px solid #8b5a2b;">
                             <div style="background: linear-gradient(90deg, #4a7c59, #2d5f3f); height: 100%; width: ${
@@ -268,7 +274,7 @@ export default class UIManager {
                             }%; transition: width 0.5s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);"></div>
                         </div>
                     </div>
-                `
+                `,
                   )
                   .join("")}
             </div>
@@ -279,7 +285,7 @@ export default class UIManager {
     let softSkillsHTML = `
             <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #8b5a2b;">
                 <h3 style="font-size: 1.125rem; font-weight: 600; color: #3e2723; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                    ${createIcon('star', { size: 22, color: '#3e2723' })}
+                    ${createIcon("star", { size: 22, color: "#3e2723" })}
                     <span>${t("skills.softSkillsTitle")}</span>
                 </h3>
                 <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
@@ -287,10 +293,10 @@ export default class UIManager {
                       .map(
                         (skill) => `
                         <span style="background: #f4e4c1; color: #5d4037; padding: 0.5rem 1rem; border-radius: 12px; font-size: 0.875rem; font-weight: 600; border: 2px solid #d4a574; display: flex; align-items: center; gap: 0.5rem;">
-                            ${createIcon(skill.icon, { size: 16, color: '#8b5a2b' })}
+                            ${createIcon(skill.icon, { size: 16, color: "#8b5a2b" })}
                             ${skill.text}
                         </span>
-                    `
+                    `,
                       )
                       .join("")}
                 </div>
@@ -305,8 +311,8 @@ export default class UIManager {
     return `
             <div class="panel-header">
                 <div class="panel-title">${headerIcon} ${t(
-      "skills.title"
-    )}</div>
+                  "skills.title",
+                )}</div>
                 <button class="close-btn" data-panel="skills">×</button>
             </div>
             <div class="panel-content">
@@ -344,7 +350,7 @@ export default class UIManager {
                                     <span style="background: #c8e6c9; color: #1b5e20; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 500; border: 1px solid #81c784;">
                                         ${tech}
                                     </span>
-                                `
+                                `,
                                   )
                                   .join("")}
                             </div>
@@ -354,7 +360,7 @@ export default class UIManager {
                               .map(
                                 (feature) => `
                                 <li style="margin-bottom: 0.25rem;">${feature}</li>
-                            `
+                            `,
                               )
                               .join("")}
                         </ul>
@@ -394,7 +400,7 @@ export default class UIManager {
                             : ""
                         }
                     </div>
-                `
+                `,
                   )
                   .join("")}
             </div>
@@ -431,8 +437,8 @@ export default class UIManager {
                         </p>
                         <div style="color: #6d5438; font-size: 0.875rem; margin-bottom: 0.5rem;">
                             <strong>${t("projects.contributions")}</strong> ${
-                      contrib.contributions
-                    }
+                              contrib.contributions
+                            }
                         </div>
                         ${
                           contrib.github
@@ -444,7 +450,7 @@ export default class UIManager {
                             : ""
                         }
                     </div>
-                `
+                `,
                   )
                   .join("")}
             </div>
@@ -458,8 +464,8 @@ export default class UIManager {
     return `
             <div class="panel-header">
                 <div class="panel-title">${headerIcon} ${t(
-      "projects.title"
-    )}</div>
+                  "projects.title",
+                )}</div>
                 <button class="close-btn" data-panel="projects">×</button>
             </div>
             <div class="panel-content">
@@ -496,7 +502,7 @@ export default class UIManager {
               ${createIcon(interest.icon, { size: 18, color: "#8b5a2b" })}
               <span>${interest.text}</span>
             </div>
-          `
+          `,
             )
             .join("")}
         </div>
@@ -607,8 +613,8 @@ export default class UIManager {
   setupEventListeners() {
     document.querySelectorAll(".close-btn").forEach((btn) => {
       // Add ARIA label
-      btn.setAttribute('aria-label', 'Chiudi pannello')
-      btn.setAttribute('tabindex', '0')
+      btn.setAttribute("aria-label", "Chiudi pannello");
+      btn.setAttribute("tabindex", "0");
 
       // Click handler
       btn.addEventListener("click", () => {
@@ -617,9 +623,9 @@ export default class UIManager {
 
       // Keyboard navigation
       btn.addEventListener("keydown", (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault()
-          this.hideCurrentPanel()
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          this.hideCurrentPanel();
         }
       });
     });
@@ -646,7 +652,7 @@ export default class UIManager {
     panel.classList.add("active");
 
     // Respect reduced motion preference
-    const duration = window.reducedMotion ? 0 : 0.5
+    const duration = window.reducedMotion ? 0 : 0.5;
 
     gsap.fromTo(
       panel,
@@ -661,12 +667,12 @@ export default class UIManager {
         ease: "power3.out",
         onComplete: () => {
           // Focus management - focus on close button when panel opens
-          const closeBtn = panel.querySelector('.close-btn')
+          const closeBtn = panel.querySelector(".close-btn");
           if (closeBtn) {
-            setTimeout(() => closeBtn.focus(), 100)
+            setTimeout(() => closeBtn.focus(), 100);
           }
-        }
-      }
+        },
+      },
     );
   }
 
@@ -681,7 +687,7 @@ export default class UIManager {
       gsap.killTweensOf(panel);
 
       // Respect reduced motion preference
-      const duration = window.reducedMotion ? 0 : 0.4
+      const duration = window.reducedMotion ? 0 : 0.4;
 
       gsap.to(panel, {
         x: "100%",
